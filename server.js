@@ -12,21 +12,21 @@ app.get("/health", function(req, res) {
   res.json({ ok: true, hasKey: !!API_KEY });
 });
 
+// Search using Places API (New) - Text Search
 async function textSearch(query, pageToken) {
-  var url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" +
-    encodeURIComponent(query) + "&key=" + API_KEY;
-  if (pageToken) url += "&pagetoken=" + encodeURIComponent(pageToken);
-  var res = await fetch(url);
-  return res.json();
-}
+  var body = { textQuery: query, maxResultCount: 20 };
+  if (pageToken) body.pageToken = pageToken;
 
-async function getDetails(placeId) {
-  var fields = "name,formatted_phone_number,website,formatted_address,rating,user_ratings_total,url";
-  var url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=" +
-    placeId + "&fields=" + fields + "&key=" + API_KEY;
-  var res = await fetch(url);
-  var data = await res.json();
-  return data.result || {};
+  var res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": API_KEY,
+      "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.websiteUri,places.rating,places.userRatingCount,places.googleMapsUri,nextPageToken"
+    },
+    body: JSON.stringify(body)
+  });
+  return res.json();
 }
 
 function sleep(ms) {
@@ -41,7 +41,7 @@ app.get("/scrape", async function(req, res) {
   var niche = req.query.niche;
   var city = req.query.city;
   var state = req.query.state || "OH";
-  var limit = Math.min(parseInt(req.query.limit) || 60, 180);
+  var limit = Math.min(parseInt(req.query.limit) || 60, 60);
 
   if (!niche || !city) {
     return res.status(400).json({ error: "niche and city are required." });
@@ -58,69 +58,60 @@ app.get("/scrape", async function(req, res) {
         await sleep(2000);
       }
 
-      var searchData = await textSearch(query, pageToken);
+      var data = await textSearch(query, pageToken);
 
-      if (searchData.status !== "OK" && searchData.status !== "ZERO_RESULTS") {
+      if (data.error) {
         return res.status(502).json({
-          error: "Google API error: " + searchData.status,
-          detail: searchData.error_message || ""
+          error: "Google API error: " + (data.error.message || JSON.stringify(data.error))
         });
       }
 
-      var places = searchData.results || [];
+      var places = data.places || [];
 
-      for (var i = 0; i < places.length && leads.length < limit; i += 5) {
-        var batch = places.slice(i, i + 5);
-        var details = await Promise.all(
-          batch.map(function(pl) { return getDetails(pl.place_id); })
-        );
+      for (var i = 0; i < places.length && leads.length < limit; i++) {
+        var pl = places[i];
+        var id = pl.id;
+        if (seen.has(id)) continue;
+        seen.add(id);
 
-        for (var j = 0; j < batch.length; j++) {
-          var pl = batch[j];
-          var detail = details[j];
+        var score = 50;
+        if (!pl.websiteUri) score += 25;
+        if (pl.rating && pl.rating < 3.5) score += 15;
+        if (!pl.nationalPhoneNumber) score += 10;
+        if (pl.userRatingCount && pl.userRatingCount < 10) score += 10;
+        if (score > 100) score = 100;
 
-          if (seen.has(pl.place_id)) continue;
-          seen.add(pl.place_id);
+        var painPoints = [];
+        if (!pl.websiteUri) painPoints.push("no website");
+        if (!pl.nationalPhoneNumber) painPoints.push("no listed phone");
+        if (pl.rating && pl.rating < 3.5) painPoints.push("low Google rating");
+        if (pl.userRatingCount && pl.userRatingCount < 10) painPoints.push("very few reviews");
 
-          var score = 50;
-          if (!detail.website) score += 25;
-          if (detail.rating && detail.rating < 3.5) score += 15;
-          if (!detail.formatted_phone_number) score += 10;
-          if (detail.user_ratings_total && detail.user_ratings_total < 10) score += 10;
-          if (score > 100) score = 100;
-
-          var painPoints = [];
-          if (!detail.website) painPoints.push("no website");
-          if (!detail.formatted_phone_number) painPoints.push("no listed phone");
-          if (detail.rating && detail.rating < 3.5) painPoints.push("low Google rating");
-          if (detail.user_ratings_total && detail.user_ratings_total < 10) painPoints.push("very few reviews");
-
-          var website = "";
-          if (detail.website) {
-            website = detail.website.replace(/^https?:\/\//, "").replace(/\/$/, "");
-          }
-
-          leads.push({
-            name: detail.name || pl.name || "",
-            phone: detail.formatted_phone_number || "",
-            website: website,
-            address: detail.formatted_address || pl.formatted_address || "",
-            rating: detail.rating || null,
-            reviewCount: detail.user_ratings_total || 0,
-            mapsUrl: detail.url || "",
-            score: score,
-            scoreReason: painPoints.length > 0
-              ? "Missing: " + painPoints.join(", ")
-              : "Has web presence but may need automation",
-            painPoint: painPoints.length > 0
-              ? painPoints.join(" · ")
-              : "Could benefit from AI automation",
-            source: "Google Maps"
-          });
+        var website = "";
+        if (pl.websiteUri) {
+          website = pl.websiteUri.replace(/^https?:\/\//, "").replace(/\/$/, "");
         }
+
+        leads.push({
+          name: (pl.displayName && pl.displayName.text) || "",
+          phone: pl.nationalPhoneNumber || "",
+          website: website,
+          address: pl.formattedAddress || "",
+          rating: pl.rating || null,
+          reviewCount: pl.userRatingCount || 0,
+          mapsUrl: pl.googleMapsUri || "",
+          score: score,
+          scoreReason: painPoints.length > 0
+            ? "Missing: " + painPoints.join(", ")
+            : "Has web presence but may need automation",
+          painPoint: painPoints.length > 0
+            ? painPoints.join(" · ")
+            : "Could benefit from AI automation",
+          source: "Google Maps"
+        });
       }
 
-      pageToken = searchData.next_page_token || null;
+      pageToken = data.nextPageToken || null;
       if (!pageToken) break;
     }
 
