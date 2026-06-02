@@ -5,14 +5,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+app.options("*", cors());
 app.use(express.json());
 
 app.get("/health", function(req, res) {
   res.json({ ok: true, hasKey: !!API_KEY });
 });
 
-// Search using Places API (New) - Text Search
 async function textSearch(query, pageToken) {
   var body = { textQuery: query, maxResultCount: 20 };
   if (pageToken) body.pageToken = pageToken;
