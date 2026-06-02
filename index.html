@@ -475,8 +475,8 @@ function CalendlyView(p){
 function ScraperView(p){
   var dm=p.dm;
   var sk=uk(p.user,"sessions");
-  var [backendUrl,setBackendUrl]=useState(function(){return localStorage.getItem(uk(p.user,"backendUrl"))||"";});
-  var [showUrlInput,setShowUrlInput]=useState(!localStorage.getItem(uk(p.user,"backendUrl")));
+  var [backendUrl,setBackendUrl]=useState(function(){return localStorage.getItem(uk(p.user,"backendUrl"))||"https://thriving-vibrancy-production-5274.up.railway.app";});
+  var [showUrlInput,setShowUrlInput]=useState(false);
   var [niche,setNiche]=useState("");
   var [city,setCity]=useState("");
   var [loading,setLoading]=useState(false);
