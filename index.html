@@ -50,13 +50,35 @@ function KanbanCard(p){
   return(
     <div style={{background:dm.card,borderRadius:10,border:"0.5px solid "+dm.border,padding:"10px 12px",marginBottom:8,position:"relative"}}>
       <div onClick={function(){p.onOpen(l.id);}} style={{cursor:"pointer",marginBottom:8}}>
-        <p style={{fontSize:13,fontWeight:700,margin:"0 0 2px",color:dm.text}}>{l.name}</p>
-        <p style={{fontSize:11,color:dm.ts,margin:"0 0 2px"}}>{l.phone||"No phone"}</p>
-        {l.rating&&<p style={{fontSize:11,color:"#f5b942",margin:"0 0 2px"}}>⭐ {l.rating} ({l.reviewCount||0} reviews)</p>}
-        {l.website?<a href={"https://"+l.website} target="_blank" rel="noreferrer" onClick={function(e){e.stopPropagation();}} style={{fontSize:11,color:"#6b8cff",display:"block",margin:"0 0 2px",wordBreak:"break-all"}}>{l.website}</a>:<p style={{fontSize:11,color:"#cc3333",margin:"0 0 2px",fontStyle:"italic"}}>No website</p>}
-        {l.address&&<p style={{fontSize:10,color:dm.tt,margin:0}}>{l.address}</p>}
-        {l.mapsUrl&&<a href={l.mapsUrl} target="_blank" rel="noreferrer" onClick={function(e){e.stopPropagation();}} style={{fontSize:10,color:"#6b8cff",display:"block",marginTop:2}}>View on Maps →</a>}
+        <p style={{fontSize:13,fontWeight:700,margin:"0 0 4px",color:dm.text}}>{l.name}</p>
+        <p style={{fontSize:11,color:dm.ts,margin:"0 0 3px"}}>{l.phone||"⚠ No phone listed"}</p>
+
+        {/* Rating */}
+        {l.rating
+          ?<p style={{fontSize:11,color:"#f5b942",margin:"0 0 3px"}}>⭐ {l.rating} <span style={{color:dm.tt}}>({l.reviewCount||0} reviews)</span></p>
+          :<p style={{fontSize:11,color:"#cc3333",margin:"0 0 3px",fontStyle:"italic"}}>⚠ No Google rating</p>
+        }
+
+        {/* Website */}
+        {l.website
+          ?<a href={"https://"+l.website} target="_blank" rel="noreferrer" onClick={function(e){e.stopPropagation();}} style={{fontSize:11,color:"#6b8cff",display:"block",margin:"0 0 3px",wordBreak:"break-all"}}>{l.website}</a>
+          :<p style={{fontSize:11,color:"#cc3333",margin:"0 0 3px",fontStyle:"italic"}}>⚠ No website</p>
+        }
+
+        {/* Pain points */}
+        {l.painPoint&&l.painPoint!=="Could benefit from AI automation"&&(
+          <div style={{background:"#3d2a0a",borderRadius:6,padding:"3px 7px",marginBottom:3,display:"inline-block"}}>
+            <p style={{fontSize:10,color:"#f5b942",margin:0,fontWeight:700}}>⚠ {l.painPoint}</p>
+          </div>
+        )}
+
+        {/* Score reason */}
+        {l.scoreReason&&<p style={{fontSize:10,color:dm.tt,margin:"2px 0 0",fontStyle:"italic"}}>{l.scoreReason}</p>}
+
+        {l.address&&<p style={{fontSize:10,color:dm.tt,margin:"3px 0 0"}}>{l.address}</p>}
+        {l.mapsUrl&&<a href={l.mapsUrl} target="_blank" rel="noreferrer" onClick={function(e){e.stopPropagation();}} style={{fontSize:10,color:"#6b8cff",display:"block",marginTop:2}}>📍 View on Maps</a>}
       </div>
+
       <div style={{marginBottom:6}} onClick={function(e){e.stopPropagation();}}>
         {editing?(
           <div>
@@ -72,12 +94,15 @@ function KanbanCard(p){
           </div>
         )}
       </div>
+
       <div style={{display:"flex",gap:4,alignItems:"center"}}>
         <button onClick={function(e){e.stopPropagation();setMoving(function(v){return !v;});}} style={{flex:1,fontSize:10,padding:"3px 6px",borderRadius:8,border:"0.5px solid "+sc(l.stage),background:sb(l.stage),color:sc(l.stage),fontWeight:700,cursor:"pointer",textAlign:"left"}}>{l.stage} ▾</button>
         <button onClick={function(e){e.stopPropagation();p.onDial(l.id);}} style={{fontSize:10,padding:"2px 6px",borderRadius:99,border:"0.5px solid "+dm.border,background:"transparent",cursor:"pointer",color:dm.ts}}>📞</button>
         <button onClick={function(e){e.stopPropagation();p.onBook(l.id);}} style={{fontSize:10,padding:"2px 6px",borderRadius:99,border:"0.5px solid "+dm.border,background:"transparent",cursor:"pointer",color:dm.ts}}>📅</button>
         <button onClick={function(e){e.stopPropagation();p.onFolder(l);}} style={{fontSize:10,padding:"2px 6px",borderRadius:99,border:"0.5px solid "+dm.border,background:"transparent",cursor:"pointer",color:dm.ts}}>📁</button>
+        <ScoreRing score={l.score!=null?l.score:null}/>
       </div>
+
       {moving&&(
         <div style={{position:"absolute",top:"100%",left:0,zIndex:50,background:dm.card,border:"0.5px solid "+dm.border,borderRadius:10,padding:"4px",marginTop:2,width:"100%",boxShadow:"0 4px 16px rgba(0,0,0,0.2)"}}>
           {STAGES.filter(function(st){return st!==l.stage;}).map(function(st){return <div key={st} onClick={function(e){move(e,st);}} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 8px",borderRadius:8,cursor:"pointer",background:sb(st),marginBottom:2}} onMouseEnter={function(e){e.currentTarget.style.opacity="0.8";}} onMouseLeave={function(e){e.currentTarget.style.opacity="1";}}><span style={{width:8,height:8,borderRadius:"50%",background:sc(st),display:"inline-block"}}/><span style={{fontSize:12,color:sc(st),fontWeight:700}}>{st}</span></div>;})}
