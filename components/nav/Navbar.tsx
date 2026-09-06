@@ -36,9 +36,9 @@ export function Navbar() {
       >
         <a href="#top" className="flex items-center gap-2 font-semibold tracking-tight text-paper-50">
           <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink-600 bg-ink-900 font-mono text-xs text-accent">
-            S
+            N
           </span>
-          <span className="text-[15px]">SystemCore</span>
+          <span className="text-[15px]">NextGen Closers AI</span>
         </a>
 
         <ul className="hidden items-center gap-8 md:flex">

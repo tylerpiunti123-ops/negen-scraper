@@ -15,16 +15,16 @@ const mono = JetBrains_Mono({
   weight: ["400", "500", "600"],
 });
 
-const siteUrl = "https://www.systemcore.ai";
-const title = "SystemCore — AI Systems That Run Your Front Office";
+const siteUrl = "https://nextgenclosersai.vercel.app";
+const title = "NextGen Closers AI — AI Systems That Run Your Front Office";
 const description =
-  "SystemCore builds AI-powered operating systems that capture leads, respond to customers, automate follow-up, and keep your business moving. Try the live demos before you talk to us.";
+  "NextGen Closers AI builds AI-powered operating systems that capture leads, respond to customers, automate follow-up, and keep your business moving. Try the live demos before you talk to us.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: title,
-    template: "%s — SystemCore",
+    template: "%s — NextGen Closers AI",
   },
   description,
   keywords: [
@@ -35,19 +35,19 @@ export const metadata: Metadata = {
     "lead follow-up automation",
     "CRM automation",
   ],
-  authors: [{ name: "SystemCore" }],
+  authors: [{ name: "NextGen Closers AI" }],
   openGraph: {
     type: "website",
     url: siteUrl,
     title,
     description,
-    siteName: "SystemCore",
+    siteName: "NextGen Closers AI",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "SystemCore — AI systems that run your front office",
+        alt: "NextGen Closers AI — AI systems that run your front office",
       },
     ],
   },
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "SystemCore",
+  name: "NextGen Closers AI",
   url: siteUrl,
   description,
   sameAs: [],

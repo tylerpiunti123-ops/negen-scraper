@@ -11,9 +11,9 @@ export function Footer() {
           <div className="max-w-sm">
             <div className="flex items-center gap-2 font-semibold tracking-tight text-paper-50">
               <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink-600 bg-ink-900 font-mono text-xs text-accent">
-                S
+                N
               </span>
-              <span>SystemCore</span>
+              <span>NextGen Closers AI</span>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-mist-500">
               AI-powered systems that capture leads, respond to customers, and automate follow-up
@@ -53,7 +53,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-ink-800 pt-6 text-xs text-mist-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} SystemCore. All rights reserved.</p>
+          <p>© {year} NextGen Closers AI. All rights reserved.</p>
           <p>Demo data shown throughout this site is illustrative and not real client data.</p>
         </div>
       </Container>

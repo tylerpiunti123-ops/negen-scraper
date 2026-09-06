@@ -74,6 +74,21 @@ export function ROICalculator() {
           </FadeIn>
 
           <FadeIn delay={0.1} className="flex flex-col gap-4">
+            <div className="rounded-2xl border border-accent/30 bg-accent/[0.06] p-6">
+              <p className="font-mono text-xs uppercase tracking-widest text-accent">
+                Estimated Opportunity You&apos;re Currently Missing
+              </p>
+              <p className="mt-2 flex items-baseline gap-2 text-4xl font-semibold text-paper-50 sm:text-5xl">
+                <AnimatedCounter value={results.estimatedMissedValue} format={formatCurrency} />
+                <span className="text-base font-normal text-mist-400">/ month</span>
+              </p>
+              <p className="mt-2 text-sm text-mist-400">
+                ≈ {formatCurrency(results.estimatedMissedValue * 12)} per year at your current
+                numbers — based on {formatNumber(results.estimatedMissedOpportunities)} missed
+                opportunities/mo.
+              </p>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <ResultCard
                 label="Estimated Missed Opportunities"

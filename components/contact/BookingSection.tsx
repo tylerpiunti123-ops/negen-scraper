@@ -8,6 +8,8 @@ import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { CalendlyEmbed } from "@/components/contact/CalendlyEmbed";
+import { CALENDLY_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 interface FormState {
@@ -230,14 +232,19 @@ export function BookingSection() {
             <CalendarDays className="h-6 w-6 text-accent" />
             <p className="mt-3 text-sm font-medium text-paper-50">Prefer to pick a time directly?</p>
             <p className="mt-2 text-sm leading-relaxed text-mist-400">
-              This panel is reserved for a live scheduling embed (Calendly or an equivalent
-              booking tool) once connected.
+              Book straight onto the calendar below — no need to wait for a reply.
             </p>
-            <div className="mt-5 flex flex-1 items-center justify-center rounded-xl border border-dashed border-ink-600 bg-ink-950/40 p-8 text-center">
-              <p className="text-xs uppercase tracking-widest text-mist-500">
-                Scheduling embed placeholder
-              </p>
+            <div className="mt-5 overflow-hidden rounded-xl border border-ink-700 bg-white">
+              <CalendlyEmbed />
             </div>
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 text-center text-xs text-mist-500 hover:text-paper-50"
+            >
+              Having trouble loading the calendar? Open it in a new tab →
+            </a>
           </FadeIn>
         </div>
       </Container>
