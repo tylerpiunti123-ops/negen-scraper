@@ -79,7 +79,7 @@ export function LiveOpsDashboard() {
               Live (Simulated)
             </span>
           </div>
-          <ul className="space-y-2 font-mono text-xs">
+          <ul className="h-[200px] space-y-2 overflow-hidden font-mono text-xs">
             <AnimatePresence initial={false}>
               {feed.map((entry) => (
                 <motion.li

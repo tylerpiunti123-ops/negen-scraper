@@ -102,7 +102,7 @@ export function WorkflowVisualization() {
 
       <div className="mt-2 rounded-lg border border-ink-700 bg-ink-950/60 p-4 font-mono text-xs">
         <p className="mb-2 uppercase tracking-widest text-mist-500">System Log</p>
-        <ul className="space-y-1.5">
+        <ul className="min-h-[136px] space-y-1.5">
           <AnimatePresence initial={false}>
             {pipelineLog.slice(0, logIndex).map((entry) => (
               <motion.li
