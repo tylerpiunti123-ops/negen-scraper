@@ -16,19 +16,24 @@ const mono = JetBrains_Mono({
   weight: ["400", "500", "600"],
 });
 
-// Set NEXT_PUBLIC_SITE_URL once the domain is live so OpenGraph/Twitter
-// image URLs resolve to absolute paths. Left unset until then.
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+// Temporary stand-in until the real domain is registered — this is the
+// default *.vercel.app URL Vercel assigns to a project named
+// "fauquier-mobile-detailing" (matching this folder/package name). If the
+// name is taken and Vercel assigns a different one, update NEXT_PUBLIC_SITE_URL
+// in that project's env vars instead of editing this fallback, and swap it
+// again once a custom domain is attached.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fauquier-mobile-detailing.vercel.app";
 const title = `${detailingBusiness.name} — Paint Correction, Ceramic Coating & Mobile Detailing`;
 const description =
   "Fauquier Mobile Detailing brings premium paint correction, ceramic coating engineered for long-term protection, headlight restoration, and full interior/exterior detailing straight to your driveway. Call 540-878-8636.";
 
 export const metadata: Metadata = {
-  ...(siteUrl ? { metadataBase: new URL(siteUrl) } : {}),
+  metadataBase: new URL(siteUrl),
   title,
   description,
   openGraph: {
     type: "website",
+    url: siteUrl,
     title,
     description,
     siteName: detailingBusiness.name,
