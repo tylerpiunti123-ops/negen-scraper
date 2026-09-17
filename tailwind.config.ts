@@ -36,6 +36,18 @@ const config: Config = {
           warn: "#e0b24c",
           off: "#7a7d87",
         },
+        moto: {
+          black: "#040405",
+          carbon: "#0a0b0d",
+          panel: "#101114",
+          panel2: "#17181c",
+          line: "#232429",
+          chrome: "#d7dadf",
+          chromedim: "#7d818a",
+          red: "#c31432",
+          redlight: "#ff3b52",
+          reddim: "#5c0f1c",
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -43,6 +55,7 @@ const config: Config = {
       },
       boxShadow: {
         panel: "0 1px 0 0 rgba(255,255,255,0.04) inset, 0 20px 60px -20px rgba(0,0,0,0.6)",
+        gloss: "0 1px 0 0 rgba(255,255,255,0.06) inset, 0 30px 80px -24px rgba(0,0,0,0.75)",
       },
       keyframes: {
         blink: {
@@ -53,10 +66,21 @@ const config: Config = {
           "0%, 100%": { boxShadow: "0 0 0 0 rgba(62,207,142,0.45)" },
           "70%": { boxShadow: "0 0 0 6px rgba(62,207,142,0)" },
         },
+        sweep: {
+          "0%": { transform: "translateX(-140%) skewX(-12deg)" },
+          "100%": { transform: "translateX(140%) skewX(-12deg)" },
+        },
+        droplet: {
+          "0%": { transform: "translateY(-16px)", opacity: "0" },
+          "12%": { opacity: "1" },
+          "82%": { opacity: "1" },
+          "100%": { transform: "translateY(var(--fall, 380px))", opacity: "0" },
+        },
       },
       animation: {
         blink: "blink 1.2s ease-in-out infinite",
         pulseDot: "pulseDot 2s ease-in-out infinite",
+        sweep: "sweep 3.2s ease-in-out infinite",
       },
     },
   },
