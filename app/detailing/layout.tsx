@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 const siteUrl = "https://nextgenclosersai.vercel.app/detailing";
-const title = "Apex Auto Detailing — Paint Correction, Ceramic Coating & Mobile Detailing";
+const title = "Fauquier Mobile Detailing — Paint Correction, Ceramic Coating & Mobile Detailing";
 const description =
-  "Premium mobile and in-shop auto detailing: paint correction, ceramic coating engineered for long-term protection, headlight restoration, and full interior/exterior detailing.";
+  "Fauquier Mobile Detailing brings premium paint correction, ceramic coating engineered for long-term protection, headlight restoration, and full interior/exterior detailing straight to your driveway. Call 540-878-8636.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     title,
     description,
-    siteName: "Apex Auto Detailing",
+    siteName: "Fauquier Mobile Detailing",
   },
   twitter: {
     card: "summary_large_image",

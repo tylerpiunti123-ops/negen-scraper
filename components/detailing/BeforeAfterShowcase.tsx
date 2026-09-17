@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { beforeAfterItems } from "@/data/detailing/beforeAfter";
 import { BeforeAfterSlider } from "./shared/BeforeAfterSlider";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 import { cn } from "@/lib/utils";
 
 export function BeforeAfterShowcase() {

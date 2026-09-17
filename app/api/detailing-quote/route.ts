@@ -62,7 +62,7 @@ async function sendNotificationEmail(payload: ValidatedQuote) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: "Apex Auto Detailing <onboarding@resend.dev>",
+      from: "Fauquier Mobile Detailing <onboarding@resend.dev>",
       to: [CONTACT_NOTIFICATION_EMAIL],
       reply_to: payload.contact.email,
       subject: `New detailing quote request — ${payload.contact.name}`,

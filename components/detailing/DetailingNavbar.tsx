@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
 import { detailingNavLinks } from "@/data/detailing/navigation";
+import { detailingBusiness } from "@/data/detailing/business";
 import { CTAButton } from "./shared/CTAButton";
 import { cn } from "@/lib/utils";
 
@@ -35,10 +36,12 @@ export function DetailingNavbar() {
         aria-label="Primary"
       >
         <a href="#top" className="flex items-center gap-2 font-semibold tracking-tight text-paper-50">
-          <span className="flex h-8 w-8 items-center justify-center rounded-md border border-moto-line bg-moto-panel font-mono text-xs text-moto-redlight">
-            A
-          </span>
-          <span className="text-[15px]">Apex Auto Detailing</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={detailingBusiness.logoMark}
+            alt={detailingBusiness.name}
+            className={cn("w-auto transition-all duration-500", scrolled ? "h-11" : "h-14")}
+          />
         </a>
 
         <ul className="hidden items-center gap-8 md:flex">
@@ -54,7 +57,14 @@ export function DetailingNavbar() {
           ))}
         </ul>
 
-        <div className="hidden md:flex">
+        <div className="hidden items-center gap-5 md:flex">
+          <a
+            href={detailingBusiness.phoneHref}
+            className="flex items-center gap-2 text-sm font-semibold text-paper-50 transition-colors hover:text-moto-bluelight"
+          >
+            <Phone className="h-4 w-4 text-moto-redlight" />
+            {detailingBusiness.phoneDisplay}
+          </a>
           <CTAButton href="#quote" variant="primary" className="px-5 py-2.5 text-xs">
             Get A Quote
           </CTAButton>
@@ -92,7 +102,14 @@ export function DetailingNavbar() {
                 </li>
               ))}
             </ul>
-            <div className="px-4 pb-4">
+            <div className="flex flex-col gap-3 px-4 pb-4">
+              <a
+                href={detailingBusiness.phoneHref}
+                className="flex items-center justify-center gap-2 text-sm font-semibold text-paper-50"
+              >
+                <Phone className="h-4 w-4 text-moto-redlight" />
+                {detailingBusiness.phoneDisplay}
+              </a>
               <CTAButton href="#quote" variant="primary" onClick={() => setMenuOpen(false)} className="w-full">
                 Get A Quote
               </CTAButton>

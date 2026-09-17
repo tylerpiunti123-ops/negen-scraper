@@ -1,4 +1,6 @@
+import { Phone } from "lucide-react";
 import { detailingNavLinks } from "@/data/detailing/navigation";
+import { detailingBusiness } from "@/data/detailing/business";
 import { Container } from "@/components/ui/Container";
 import { GlossPanel } from "./shared/GlossPanel";
 
@@ -14,16 +16,19 @@ export function DetailingFooter() {
       <Container className="relative flex flex-col gap-8 pb-14">
         <div className="flex flex-col justify-between gap-8 border-t border-moto-line pt-10 sm:flex-row">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2 font-semibold tracking-tight text-paper-50">
-              <span className="flex h-8 w-8 items-center justify-center rounded-md border border-moto-line bg-moto-panel font-mono text-xs text-moto-redlight">
-                A
-              </span>
-              <span>Apex Auto Detailing</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={detailingBusiness.logoMark} alt={detailingBusiness.name} className="h-16 w-auto" />
             <p className="mt-3 text-sm leading-relaxed text-mist-500">
               Paint correction, ceramic coating, and mobile detailing finished to a standard that
               holds up in direct sunlight.
             </p>
+            <a
+              href={detailingBusiness.phoneHref}
+              className="mt-4 flex w-fit items-center gap-2 text-sm font-semibold text-paper-50 transition-colors hover:text-moto-bluelight"
+            >
+              <Phone className="h-4 w-4 text-moto-redlight" />
+              {detailingBusiness.phoneDisplay}
+            </a>
           </div>
 
           <div className="flex flex-wrap gap-x-10 gap-y-6">
@@ -58,7 +63,7 @@ export function DetailingFooter() {
         </div>
 
         <div className="flex flex-col gap-3 border-t border-moto-line pt-6 text-xs text-mist-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} Apex Auto Detailing. All rights reserved.</p>
+          <p>© {year} {detailingBusiness.name}. All rights reserved.</p>
           <p>Vehicle imagery shown throughout this site is illustrative.</p>
         </div>
       </Container>

@@ -1,7 +1,7 @@
 import { detailingServices } from "@/data/detailing/services";
 import { GlossPanel } from "./shared/GlossPanel";
 import { Tilt3D } from "./shared/Tilt3D";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 import { FadeIn } from "@/components/ui/FadeIn";
 
 /**

@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { PlaceholderSurface } from "./shared/PlaceholderSurface";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 
 /**
  * Scroll-linked headlight clarity reveal: a cloudy haze layer fades out and

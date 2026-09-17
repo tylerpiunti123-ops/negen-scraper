@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { GlossPanel } from "./shared/GlossPanel";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 import { detailingAssets } from "@/data/detailing/assets";
 
 /**

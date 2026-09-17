@@ -1,6 +1,6 @@
 import { GlossPanel } from "./shared/GlossPanel";
 import { CTAButton } from "./shared/CTAButton";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 import { detailingAssets } from "@/data/detailing/assets";
 
 /**

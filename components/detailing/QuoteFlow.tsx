@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, ImagePlus, Loader2, X } from "lucide-react";
 import { quoteNeeds, quoteSteps, quoteVehicleTypes } from "@/data/detailing/quote";
 import { CTAButton } from "./shared/CTAButton";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 import { cn } from "@/lib/utils";
 
 interface PhotoItem {

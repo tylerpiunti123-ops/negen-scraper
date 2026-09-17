@@ -47,6 +47,9 @@ const config: Config = {
           red: "#c31432",
           redlight: "#ff3b52",
           reddim: "#5c0f1c",
+          blue: "#1c4fd1",
+          bluelight: "#5b8dff",
+          bluedim: "#0d1f4d",
         },
       },
       fontFamily: {

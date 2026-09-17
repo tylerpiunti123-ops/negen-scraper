@@ -2,7 +2,7 @@
 
 import { useReducedMotion } from "framer-motion";
 import { GlossPanel } from "./shared/GlossPanel";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeading } from "./shared/DetailingSectionHeading";
 import { CTAButton } from "./shared/CTAButton";
 import { detailingAssets } from "@/data/detailing/assets";
 
