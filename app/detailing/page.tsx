@@ -1,6 +1,7 @@
 import { DetailingNavbar } from "@/components/detailing/DetailingNavbar";
 import { Hero3D } from "@/components/detailing/Hero3D";
 import { ServiceCards3D } from "@/components/detailing/ServiceCards3D";
+import { RecentWorkGallery } from "@/components/detailing/RecentWorkGallery";
 import { TransformationScroll } from "@/components/detailing/TransformationScroll";
 import { PaintCorrectionSection } from "@/components/detailing/PaintCorrectionSection";
 import { CeramicCoatingSection } from "@/components/detailing/CeramicCoatingSection";
@@ -19,6 +20,7 @@ export default function DetailingPage() {
       <main>
         <Hero3D />
         <ServiceCards3D />
+        <RecentWorkGallery />
         <TransformationScroll />
         <PaintCorrectionSection />
         <CeramicCoatingSection />

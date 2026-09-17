@@ -1,6 +1,7 @@
 import { GlossPanel } from "./shared/GlossPanel";
 import { CTAButton } from "./shared/CTAButton";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { detailingAssets } from "@/data/detailing/assets";
 
 /**
  * Interactive paint correction panel. Faint swirl/scratch texture covers the
@@ -18,7 +19,14 @@ export function PaintCorrectionSection() {
           description="Correction lifts swirls and haze out of the clear coat until the reflection is sharp enough to read a badge in."
         />
 
-        <GlossPanel variant="black" glossStrength={1} className="relative aspect-[4/3] w-full">
+        <GlossPanel
+          variant="black"
+          glossStrength={1}
+          videoSrc={detailingAssets.paintCorrectionVideo}
+          posterSrc={detailingAssets.paintCorrectionPoster}
+          imageAlt="Swirl marks under inspection light on a glossy panel"
+          className="relative aspect-[4/3] w-full"
+        >
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{

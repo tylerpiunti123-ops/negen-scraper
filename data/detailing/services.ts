@@ -3,6 +3,7 @@ export interface DetailingService {
   title: string;
   description: string;
   variant: "black" | "red" | "chrome";
+  imageSrc?: string;
 }
 
 export const detailingServices: DetailingService[] = [
@@ -12,6 +13,7 @@ export const detailingServices: DetailingService[] = [
     description:
       "Multi-stage machine polishing removes swirls, oxidation, and fine scratches to reveal true reflection depth.",
     variant: "black",
+    imageSrc: "/detailing/source/blue-panel-taped-swirl-inspection-1-before.jpg",
   },
   {
     id: "ceramic-coating",
@@ -19,6 +21,7 @@ export const detailingServices: DetailingService[] = [
     description:
       "A durable, hydrophobic layer engineered for long-term gloss retention and protection against the elements.",
     variant: "red",
+    imageSrc: "/detailing/source/mustang-mach1-roof-reflection.jpg",
   },
   {
     id: "headlight-restoration",
@@ -33,6 +36,7 @@ export const detailingServices: DetailingService[] = [
     description:
       "Deep extraction, conditioning, and sanitizing that restores every surface inside the cabin.",
     variant: "black",
+    imageSrc: "/detailing/source/camaro-interior.jpg",
   },
   {
     id: "exterior-detailing",
@@ -40,6 +44,7 @@ export const detailingServices: DetailingService[] = [
     description:
       "Hand wash, decontamination, and finishing passes that prep the paint for correction or coating.",
     variant: "chrome",
+    imageSrc: "/detailing/source/corvette-z06-wheel-side.jpg",
   },
   {
     id: "mobile-detailing",
@@ -47,5 +52,6 @@ export const detailingServices: DetailingService[] = [
     description:
       "Full-service detailing brought to your driveway or office lot, without sacrificing shop-level results.",
     variant: "red",
+    imageSrc: "/detailing/source/jeep-grand-cherokee-l-front-3q.jpg",
   },
 ];

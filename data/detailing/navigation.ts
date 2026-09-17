@@ -5,7 +5,7 @@ export interface DetailingNavLink {
 
 export const detailingNavLinks: DetailingNavLink[] = [
   { href: "#services", label: "Services" },
-  { href: "#paint-correction", label: "Paint Correction" },
+  { href: "#gallery", label: "Our Work" },
   { href: "#ceramic-coating", label: "Ceramic Coating" },
   { href: "#before-after", label: "Before / After" },
   { href: "#mobile", label: "Mobile Detailing" },

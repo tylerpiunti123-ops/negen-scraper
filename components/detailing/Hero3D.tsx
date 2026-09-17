@@ -12,6 +12,7 @@ import {
 import { CTAButton } from "./shared/CTAButton";
 import { GlossPanel } from "./shared/GlossPanel";
 import { FadeIn } from "@/components/ui/FadeIn";
+import { detailingAssets } from "@/data/detailing/assets";
 
 /**
  * Immersive hero vehicle experience. On fine-pointer devices the panel
@@ -122,6 +123,8 @@ export function Hero3D() {
             <GlossPanel
               variant="black"
               glossStrength={0.85}
+              imageSrc={detailingAssets.hero}
+              imageAlt="Freshly detailed truck, glossy black paint"
               className="aspect-[4/3] w-full shadow-[0_50px_120px_-30px_rgba(0,0,0,0.85)]"
             >
               <div className="flex h-full items-end p-6">

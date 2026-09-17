@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { GlossPanel } from "./shared/GlossPanel";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { detailingAssets } from "@/data/detailing/assets";
 
 /**
  * Parallax "mobile detailing" scene: the vehicle panel stays anchored while
@@ -39,7 +40,13 @@ export function MobileDetailingScene() {
         />
 
         <div className="relative aspect-[4/3] w-full">
-          <GlossPanel variant="black" glossStrength={0.7} className="absolute inset-0 z-10">
+          <GlossPanel
+            variant="black"
+            glossStrength={0.7}
+            imageSrc={detailingAssets.mobileDetailing}
+            imageAlt="Detailing a vehicle on-site in a residential driveway"
+            className="!absolute inset-0 z-10"
+          >
             <motion.div
               aria-hidden
               style={{ x: reducedMotion ? 0 : glossX }}

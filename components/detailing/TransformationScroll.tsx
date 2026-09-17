@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { PlaceholderSurface } from "./shared/PlaceholderSurface";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { detailingAssets } from "@/data/detailing/assets";
 
 /**
  * Scroll-driven "dirty to polished" transformation. A single panel morphs
@@ -48,7 +49,12 @@ export function TransformationScroll() {
                 y: reducedMotion ? 0 : parallaxY,
               }}
             >
-              <PlaceholderSurface variant="black" className="h-full w-full" />
+              <PlaceholderSurface
+                variant="black"
+                src={detailingAssets.transformationBefore}
+                alt="Oxidized red paint before correction"
+                className="h-full w-full"
+              />
             </motion.div>
 
             <motion.div

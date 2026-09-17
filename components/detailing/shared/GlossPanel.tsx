@@ -9,6 +9,8 @@ import type { PaintVariant } from "./paintGradients";
 interface GlossPanelProps {
   variant?: PaintVariant;
   imageSrc?: string;
+  videoSrc?: string;
+  posterSrc?: string;
   imageAlt?: string;
   className?: string;
   children?: ReactNode;
@@ -28,6 +30,8 @@ type PanelStyle = CSSProperties & { "--mx"?: string; "--my"?: string };
 export function GlossPanel({
   variant = "black",
   imageSrc,
+  videoSrc,
+  posterSrc,
   imageAlt = "",
   className,
   children,
@@ -71,6 +75,8 @@ export function GlossPanel({
     >
       <PlaceholderSurface
         src={imageSrc}
+        videoSrc={videoSrc}
+        posterSrc={posterSrc}
         alt={imageAlt}
         variant={variant}
         desaturate={desaturate}

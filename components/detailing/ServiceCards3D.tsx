@@ -29,12 +29,19 @@ export function ServiceCards3D() {
                   variant={service.variant}
                   glossStrength={0.6}
                   sweep={false}
-                  className="flex h-full min-h-[260px] flex-col justify-end p-6 transition-shadow duration-300 group-hover:shadow-[0_40px_80px_-24px_rgba(0,0,0,0.85)]"
+                  imageSrc={service.imageSrc}
+                  imageAlt={service.title}
+                  className="h-full min-h-[260px] transition-shadow duration-300 group-hover:shadow-[0_40px_80px_-24px_rgba(0,0,0,0.85)]"
                 >
-                  <h3 className="text-lg font-semibold text-paper-50 transition-transform duration-300 group-hover:[transform:translateZ(28px)]">
-                    {service.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-mist-400">{service.description}</p>
+                  {service.imageSrc && (
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <h3 className="text-lg font-semibold text-paper-50 transition-transform duration-300 group-hover:[transform:translateZ(28px)]">
+                      {service.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-mist-400">{service.description}</p>
+                  </div>
                 </GlossPanel>
               </Tilt3D>
             </FadeIn>

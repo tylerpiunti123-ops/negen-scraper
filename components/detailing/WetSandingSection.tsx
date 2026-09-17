@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { GlossPanel } from "./shared/GlossPanel";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { detailingAssets } from "@/data/detailing/assets";
 
 /**
  * Restrained wet-sanding showcase: a slow water sheen sweeps across a
@@ -31,7 +32,14 @@ export function WetSandingSection() {
             style={{ y: reducedMotion ? 0 : parallaxY, scale: reducedMotion ? 1 : scale }}
             className="absolute inset-0"
           >
-            <GlossPanel variant="chrome" glossStrength={0.5} sweep={false} className="h-full w-full rounded-2xl">
+            <GlossPanel
+              variant="chrome"
+              glossStrength={0.5}
+              sweep={false}
+              imageSrc={detailingAssets.wetSanding}
+              imageAlt="Glossy panel on a maroon semi truck"
+              className="h-full w-full rounded-2xl"
+            >
               {!reducedMotion && (
                 <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-40" aria-hidden="true">
                   <div className="absolute -inset-y-1/2 left-0 w-1/2 animate-[sweep_7s_ease-in-out_infinite] bg-gradient-to-r from-transparent via-white/25 to-transparent" />

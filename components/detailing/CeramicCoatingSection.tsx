@@ -4,6 +4,7 @@ import { useReducedMotion } from "framer-motion";
 import { GlossPanel } from "./shared/GlossPanel";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CTAButton } from "./shared/CTAButton";
+import { detailingAssets } from "@/data/detailing/assets";
 
 interface Droplet {
   left: string;
@@ -43,6 +44,9 @@ export function CeramicCoatingSection() {
         <GlossPanel
           variant="red"
           glossStrength={0.9}
+          videoSrc={detailingAssets.ceramicCoatingVideo}
+          posterSrc={detailingAssets.ceramicCoatingPoster}
+          imageAlt="Water droplets rolling off freshly coated glossy paint"
           className="relative order-2 aspect-[4/3] w-full lg:order-1"
         >
           {!reducedMotion && (
