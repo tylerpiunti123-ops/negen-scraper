@@ -183,8 +183,6 @@
   .hero-panel video{background:var(--panel); object-fit:contain;}
   .hero-panel .bottom-badge{position:absolute; left:20px; bottom:20px; z-index:4; opacity:0; transition:opacity .5s ease;}
   .hero-panel .bottom-badge.visible{opacity:1;}
-  .hero-gyro-hint{position:absolute; bottom:20px; right:20px; z-index:4; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--chrome); display:flex; align-items:center; gap:6px; text-shadow:0 1px 3px rgba(0,0,0,.8);}
-  @media(min-width:900px){.hero-gyro-hint{display:none;}}
 
   .scroll-cue{position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:5;
     display:flex; flex-direction:column; align-items:center; gap:6px;
@@ -448,10 +446,6 @@
           <source src="video/hero-rotation.mp4" type="video/mp4">
         </video>
         <span class="badge bottom-badge" id="heroBottomBadge">Full Correction · Ceramic Finish</span>
-      </div>
-      <div class="hero-gyro-hint" id="gyroHint">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
-        Tilt your phone
       </div>
     </div>
     <div class="hero-scrim" id="heroScrim" aria-hidden="true"></div>
@@ -952,13 +946,12 @@
   infoOverlay.addEventListener('click', function(e){ if (e.target === infoOverlay) closeServiceInfo(); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && infoOverlay.classList.contains('open')) closeServiceInfo(); });
 
-  /* ---- hero: idle css animation by default; pointer tilt on desktop; scroll parallax on mobile; gyroscope on tap ---- */
+  /* ---- hero: idle css animation by default; pointer tilt on desktop; scroll parallax on mobile ---- */
   var heroWrap = document.getElementById('heroWrap');
   var heroSection = document.getElementById('hero');
   var heroStage = document.getElementById('heroStage');
   var heroPanel = document.getElementById('heroPanel');
   var heroBg = document.getElementById('heroBg');
-  var gyroActive = false;
 
   if (finePointer && !reduced){
     heroSection.addEventListener('pointermove', function(e){
@@ -1028,7 +1021,7 @@
       var zoomP = clamp(heroPSmooth / ZOOM_SETTLE_AT, 0, 1);
       heroStage.style.transform = 'scale(' + lerp(.76, 1, zoomP) + ')';
       scrollCue.style.opacity = 1 - clamp(heroPSmooth/.1, 0, 1);
-      if (!gyroActive && !finePointer){
+      if (!finePointer){
         heroPanel.style.transform = 'perspective(1600px) scale(1.04) rotateY(' + lerp(-2,5,heroPSmooth) + 'deg) rotateX(' + lerp(1,-2,heroPSmooth) + 'deg)';
       }
       // the van is the only thing on screen until it's finished — then everything pops in together
@@ -1041,33 +1034,6 @@
       requestAnimationFrame(heroTick);
     }
     requestAnimationFrame(heroTick);
-  }
-
-  /* ---- device tilt (phone gyroscope) ---- */
-  var gyroHint = document.getElementById('gyroHint');
-  function attachGyro(){
-    if (reduced) return;
-    window.addEventListener('deviceorientation', function(e){
-      if (e.beta === null || e.gamma === null) return;
-      gyroActive = true;
-      if (gyroHint) gyroHint.style.opacity = '0';
-      var ry = clamp(e.gamma, -24, 24) * 0.3;
-      var rx = clamp((e.beta - 45), -24, 24) * -0.2;
-      heroPanel.style.transform = 'perspective(1600px) scale(1.05) rotateY('+ry+'deg) rotateX('+rx+'deg)';
-    });
-  }
-  function requestGyro(){
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){
-      DeviceOrientationEvent.requestPermission().then(function(state){
-        if (state === 'granted') attachGyro();
-      }).catch(function(){});
-    } else if (typeof DeviceOrientationEvent !== 'undefined'){
-      attachGyro();
-    }
-  }
-  if (!finePointer && !reduced){
-    document.addEventListener('touchstart', requestGyro, { once:true, passive:true });
-    if (gyroHint) setTimeout(function(){ if (!gyroActive) gyroHint.style.opacity='1'; }, 900);
   }
 
   /* ---- transformation scroll ---- */
