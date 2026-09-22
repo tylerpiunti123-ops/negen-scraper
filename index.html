@@ -337,6 +337,15 @@
   .cloth-note span{font-size:13.5px; color:var(--mist); line-height:1.5;}
   .cloth-note strong{color:var(--chrome);}
   .cloth-note em{font-style:normal; color:var(--mist-dim);}
+  .ceramic-process{margin-top:22px; padding:14px; box-shadow:inset 0 0 0 1px var(--line); background:rgba(28,79,209,.08);}
+  .ceramic-process > strong{display:block; color:var(--chrome); font-size:13.5px; margin-bottom:4px;}
+  .ceramic-process > p{font-size:13px; color:var(--mist); line-height:1.5; margin-bottom:14px;}
+  .ceramic-process .opt-grid{grid-template-columns:repeat(2,1fr); margin-top:0; gap:8px;}
+  @media(min-width:480px){.ceramic-process .opt-grid{grid-template-columns:repeat(4,1fr);}}
+  .ceramic-process .opt{padding:10px 8px; font-size:13px;}
+  .ceramic-recommend{display:none; margin-top:12px; padding:10px 12px; font-size:12.5px; color:var(--chrome); line-height:1.5;
+    background:rgba(195,20,50,.12); box-shadow:inset 0 0 0 1px rgba(255,59,82,.35);}
+  .ceramic-recommend.show{display:block;}
   .deposit-note{margin-top:16px; font-size:12.5px; color:var(--mist-dim); line-height:1.5;}
   .drop-zone{margin-top:22px; width:100%; border:1px dashed #4a4d57; padding:38px 20px; text-align:center; background:#0c0d10; transition:border-color .15s;}
   .drop-zone:hover{border-color:var(--red);}
@@ -696,6 +705,17 @@
               <input type="checkbox" id="clothSeats">
               <span><strong>My vehicle has cloth seats.</strong> Interior detailing on cloth runs a little higher than leather or vinyl — we'll factor that into your quote.</span>
             </label>
+            <div class="ceramic-process" id="ceramicProcessNote" style="display:none;">
+              <strong>Which ceramic coating process?</strong>
+              <p>One-step is a light polish before coating, two-step corrects more heavily, and hybrid lands in between. Not sure which fits your paint? Pick "Not Sure" and we'll tell you.</p>
+              <div class="opt-grid" id="ceramicProcessGrid">
+                <button type="button" class="opt" data-process="one-step">One-Step</button>
+                <button type="button" class="opt" data-process="hybrid">Hybrid</button>
+                <button type="button" class="opt" data-process="two-step">Two-Step</button>
+                <button type="button" class="opt" data-process="unsure">Not Sure</button>
+              </div>
+              <p class="ceramic-recommend" id="ceramicRecommend">Not sure is completely fine — most daily-driven vehicles do best with our <strong>Hybrid</strong> process, a strong balance of correction and value. We'll always inspect your paint in person first and confirm the right level before starting any work.</p>
+            </div>
             <button type="button" class="drop-zone" id="dropZone">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff3b52" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
               <strong>Add photos of your vehicle</strong>
@@ -1106,6 +1126,26 @@
     clothNote.style.display = showIt ? 'flex' : 'none';
     if (!showIt) document.getElementById('clothSeats').checked = false;
   }
+  var ceramicProcessNote = document.getElementById('ceramicProcessNote');
+  var ceramicRecommend = document.getElementById('ceramicRecommend');
+  var ceramicProcess = null;
+  function updateCeramicProcessNote(){
+    var showIt = needs.indexOf('ceramic') > -1;
+    ceramicProcessNote.style.display = showIt ? 'block' : 'none';
+    if (!showIt){
+      ceramicProcess = null;
+      ceramicRecommend.classList.remove('show');
+      document.querySelectorAll('#ceramicProcessGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
+    }
+  }
+  document.querySelectorAll('#ceramicProcessGrid .opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#ceramicProcessGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      ceramicProcess = btn.dataset.process;
+      ceramicRecommend.classList.toggle('show', ceramicProcess === 'unsure');
+    });
+  });
   document.querySelectorAll('#needGrid .need').forEach(function(btn){
     btn.addEventListener('click', function(){
       btn.classList.toggle('selected');
@@ -1114,6 +1154,7 @@
       if (btn.classList.contains('selected') && i === -1) needs.push(v);
       if (!btn.classList.contains('selected') && i > -1) needs.splice(i,1);
       updateClothNote();
+      updateCeramicProcessNote();
     });
   });
 
@@ -1172,6 +1213,7 @@
   /* submit */
   var QUOTE_RECIPIENT = 'fauquier.mobile.detailing@gmail.com';
   var NEED_LABELS = { paint:'Paint Correction', ceramic:'Ceramic Coating', headlight:'Headlight Restoration', interior:'Interior Detailing', exterior:'Wet Sanding & Polish', unsure:'Not Sure Yet' };
+  var PROCESS_LABELS = { 'one-step':'One-Step', hybrid:'Hybrid', 'two-step':'Two-Step', unsure:'Not sure — recommend Hybrid' };
   var VEHICLE_LABELS = { sedan:'Sedan', coupe:'Coupe', suv:'SUV', truck:'Truck', van:'Van', exotic:'Exotic / Sports', bike:'Bike', trailer:'Trailer', boat:'Boat', aircraft:'Aircraft' };
   function vehicleSummary(){
     if (LENGTH_TYPES.indexOf(vehicleType) > -1){
@@ -1214,6 +1256,7 @@
       '',
       'Vehicle: ' + (vehicleDetail || 'Not specified') + (vehicleType ? ' (' + (VEHICLE_LABELS[vehicleType] || vehicleType) + ')' : ''),
       'Needs: ' + (needs.length ? needs.map(function(k){ return NEED_LABELS[k] || k; }).join(', ') : 'Not specified') + (hasClothSeats ? ' — has cloth seats' : ''),
+      (needs.indexOf('ceramic') > -1 ? 'Ceramic process: ' + (ceramicProcess ? (PROCESS_LABELS[ceramicProcess] || ceramicProcess) : 'Not specified') : null),
       'Photos attached in-app: ' + photoCount + (photoCount ? ' (ask the customer to text or re-send these — email links can’t carry the files)' : ''),
       '',
       'Notes: ' + (notes || '—')
@@ -1221,7 +1264,7 @@
     var subject = 'Quote request — ' + name + (vehicleDetail ? ' (' + vehicleDetail + ')' : '');
     var mailto = 'mailto:' + encodeURIComponent(QUOTE_RECIPIENT) +
       '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(lines.join('\n'));
+      '&body=' + encodeURIComponent(lines.filter(function(l){ return l !== null; }).join('\n'));
     window.location.href = mailto;
     showStep('thanks', 1);
   });
