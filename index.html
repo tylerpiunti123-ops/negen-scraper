@@ -41,9 +41,11 @@
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Paint Correction" } },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Ceramic Coating" } },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Headlight Restoration" } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Interior Detailing" } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wet Sanding & Polish" } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mobile Detailing" } }
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Interior Detail" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Wet Sanding" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mobile Detailing" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Exterior Detail" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Full Detail" } }
   ]
 }
 </script>
@@ -184,12 +186,12 @@
   .hero-panel .bottom-badge{position:absolute; left:20px; bottom:20px; z-index:4; opacity:0; transition:opacity .5s ease;}
   .hero-panel .bottom-badge.visible{opacity:1;}
 
-  .scroll-cue{position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:5;
-    display:flex; flex-direction:column; align-items:center; gap:6px;
-    font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--mist-dim); transition:opacity .3s ease;}
-  .scroll-cue svg{animation:cueBounce 1.6s ease-in-out infinite;}
-  @keyframes cueBounce{0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);}}
+  .scroll-cue{position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:5;
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    font-family:"JetBrains Mono",monospace; font-size:12px; font-weight:600; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--chrome); text-shadow:0 2px 8px rgba(0,0,0,.85); transition:opacity .3s ease;}
+  .scroll-cue svg{width:24px; height:24px; animation:cueBounce 1.6s ease-in-out infinite; filter:drop-shadow(0 2px 6px rgba(0,0,0,.85));}
+  @keyframes cueBounce{0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);}}
 
   /* ---------- tilt (pointer, desktop) ---------- */
   .tilt{--rx:0deg; --ry:0deg;}
@@ -343,6 +345,7 @@
   .ceramic-process .opt-grid{grid-template-columns:repeat(2,1fr); margin-top:0; gap:8px;}
   @media(min-width:480px){.ceramic-process .opt-grid{grid-template-columns:repeat(4,1fr);}}
   .ceramic-process .opt{padding:10px 8px; font-size:13px;}
+  #ceramicInteriorGrid{grid-template-columns:repeat(2,1fr);}
   .ceramic-recommend{display:none; margin-top:12px; padding:10px 12px; font-size:12.5px; color:var(--chrome); line-height:1.5;
     background:rgba(195,20,50,.12); box-shadow:inset 0 0 0 1px rgba(255,59,82,.35);}
   .ceramic-recommend.show{display:block;}
@@ -470,7 +473,8 @@
       </div>
     </div>
     <div class="scroll-cue" id="scrollCue">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
+      <span>Scroll Down</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16M5 13l7 7 7-7"/></svg>
     </div>
   </section>
   </div>
@@ -483,7 +487,7 @@
       <div class="section-head">
         <p class="eyebrow">01 — Services</p>
         <h2 class="h2">Every finish,<br>done right.</h2>
-        <p class="lead" style="margin-top:14px;">Six services, one standard: correction and protection that hold up in direct sunlight.</p>
+        <p class="lead" style="margin-top:14px;">Eight services, one standard: correction and protection that hold up in direct sunlight.</p>
       </div>
       <div class="cards" id="serviceCards">
         <div class="tilt reveal-3d"><div class="tilt-inner">
@@ -506,21 +510,31 @@
         </div></div>
         <div class="tilt reveal-3d"><div class="tilt-inner">
           <div class="gloss cut-panel card" data-service="interior" role="button" tabindex="0" aria-haspopup="dialog">
-            <img src="images/service-interior.jpg" alt="Interior detailing"><div class="scrim"></div>
+            <img src="images/service-interior.jpg" alt="Interior detail"><div class="scrim"></div>
             <span class="card-tap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Learn More</span>
-            <div class="body"><span class="num">04</span><h3>Interior Detailing</h3><p>Deep extraction, conditioning, and sanitizing that restores every surface inside the cabin.</p></div></div>
+            <div class="body"><span class="num">04</span><h3>Interior Detail</h3><p>Deep extraction, conditioning, and sanitizing that restores every surface inside the cabin.</p></div></div>
         </div></div>
         <div class="tilt reveal-3d"><div class="tilt-inner">
-          <div class="gloss cut-panel card" data-service="exterior" role="button" tabindex="0" aria-haspopup="dialog">
-            <img src="images/service-exterior.jpg" alt="Wet sanding and polishing"><div class="scrim"></div>
+          <div class="cut-panel card placeholder" data-service="exterior" role="button" tabindex="0" aria-haspopup="dialog">
             <span class="card-tap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Learn More</span>
-            <div class="body"><span class="num">05</span><h3>Wet Sanding &amp; Polish</h3><p>Wet-sanding levels heavy oxidation, orange peel, and deep imperfections before a full polish restores a mirror-smooth finish.</p></div></div>
+            <div class="body"><span class="num">05</span><h3>Wet Sanding</h3><p>Wet-sanding levels heavy oxidation, orange peel, and deep imperfections before a full polish restores a mirror-smooth finish.</p></div></div>
         </div></div>
         <div class="tilt reveal-3d"><div class="tilt-inner">
           <div class="gloss cut-panel card" data-service="mobile" role="button" tabindex="0" aria-haspopup="dialog">
             <img src="images/service-mobile.jpg" alt="Mobile detailing"><div class="scrim"></div>
             <span class="card-tap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Learn More</span>
             <div class="body"><span class="num">06</span><h3>Mobile Detailing</h3><p>Full-service detailing brought to your driveway or office lot, without sacrificing shop-level results.</p></div></div>
+        </div></div>
+        <div class="tilt reveal-3d"><div class="tilt-inner">
+          <div class="gloss cut-panel card" data-service="exteriordetail" role="button" tabindex="0" aria-haspopup="dialog">
+            <img src="images/service-exterior.jpg" alt="Exterior detail"><div class="scrim"></div>
+            <span class="card-tap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Learn More</span>
+            <div class="body"><span class="num">07</span><h3>Exterior Detail</h3><p>Hand wash, decontamination, and finishing passes that leave the outside of your vehicle clean, protected, and ready to show.</p></div></div>
+        </div></div>
+        <div class="tilt reveal-3d"><div class="tilt-inner">
+          <div class="cut-panel card placeholder" data-service="fulldetail" role="button" tabindex="0" aria-haspopup="dialog">
+            <span class="card-tap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Learn More</span>
+            <div class="body"><span class="num">08</span><h3>Full Detail</h3><p>Our most complete service — full exterior detail and full interior detail together in one visit.</p></div></div>
         </div></div>
       </div>
     </div>
@@ -687,8 +701,10 @@
               <button type="button" class="need" data-need="paint"><span class="need-check"></span><span><strong>Paint Correction</strong><span>Swirls, scratches, dull finish</span></span></button>
               <button type="button" class="need" data-need="ceramic"><span class="need-check"></span><span><strong>Ceramic Coating</strong><span>Long-term gloss &amp; protection</span></span></button>
               <button type="button" class="need" data-need="headlight"><span class="need-check"></span><span><strong>Headlight Restoration</strong><span>Cloudy, oxidized lenses</span></span></button>
-              <button type="button" class="need" data-need="interior"><span class="need-check"></span><span><strong>Interior Detailing</strong><span>Deep clean &amp; conditioning</span></span></button>
-              <button type="button" class="need" data-need="exterior"><span class="need-check"></span><span><strong>Wet Sanding &amp; Polish</strong><span>Orange peel, heavy oxidation, deep marks</span></span></button>
+              <button type="button" class="need" data-need="interior"><span class="need-check"></span><span><strong>Interior Detail</strong><span>Deep clean &amp; conditioning</span></span></button>
+              <button type="button" class="need" data-need="exterior"><span class="need-check"></span><span><strong>Wet Sanding</strong><span>Orange peel, heavy oxidation, deep marks</span></span></button>
+              <button type="button" class="need" data-need="exteriordetail"><span class="need-check"></span><span><strong>Exterior Detail</strong><span>Wash, decontamination, finish</span></span></button>
+              <button type="button" class="need" data-need="fulldetail"><span class="need-check"></span><span><strong>Full Detail</strong><span>Exterior + interior, together</span></span></button>
               <button type="button" class="need" data-need="unsure"><span class="need-check"></span><span><strong>Not Sure Yet</strong><span>Get a recommendation</span></span></button>
             </div>
             <div class="step-footer">
@@ -703,8 +719,22 @@
             <h3 class="step-title">Show Us The Condition</h3>
             <label class="cloth-note" id="clothNote" style="display:none;">
               <input type="checkbox" id="clothSeats">
-              <span><strong>My vehicle has cloth seats.</strong> Interior detailing on cloth runs a little higher than leather or vinyl — we'll factor that into your quote.</span>
+              <span><strong>My vehicle has cloth seats.</strong> Interior detail on cloth runs a little higher than leather or vinyl — we'll factor that into your quote.</span>
             </label>
+            <div class="ceramic-process" id="ceramicItemsNote" style="display:none;">
+              <strong>What do you want ceramic coated?</strong>
+              <p>Select everything that applies.</p>
+              <div class="opt-grid" id="ceramicItemsGrid">
+                <button type="button" class="opt" data-item="wheels">Wheels</button>
+                <button type="button" class="opt" data-item="paint">Paint</button>
+                <button type="button" class="opt" data-item="glass">Glass</button>
+                <button type="button" class="opt" data-item="interior">Interior</button>
+              </div>
+              <div class="opt-grid" id="ceramicInteriorGrid" style="display:none; margin-top:10px;">
+                <button type="button" class="opt" data-interior="cloth">Cloth Coating</button>
+                <button type="button" class="opt" data-interior="leathervinyl">Leather / Vinyl Coating</button>
+              </div>
+            </div>
             <div class="ceramic-process" id="ceramicProcessNote" style="display:none;">
               <strong>Which ceramic coating process?</strong>
               <p>One-step is a light polish before coating, two-step corrects more heavily, and hybrid lands in between. Not sure which fits your paint? Pick "Not Sure" and we'll tell you.</p>
@@ -900,12 +930,12 @@
       list: ['Wet-sanding through a series of grits to remove the oxidized haze', 'Machine polishing back to optical clarity', 'UV-resistant sealant so the clouding doesn’t come right back', 'Meaningfully improves night driving visibility and safety']
     },
     interior: {
-      num: '04', title: 'Interior Detailing', img: 'images/service-interior.jpg',
+      num: '04', title: 'Interior Detail', img: 'images/service-interior.jpg',
       desc: "A deep clean of every surface inside the cabin — not just a vacuum and wipe-down. Extraction lifts what's ground into carpet and upholstery, and everything gets conditioned and sanitized afterward.",
       list: ['Deep vacuum plus hot-water extraction on carpets and seats', 'Leather conditioning or fabric protection depending on your interior', 'Odor elimination and sanitizing, not just a fragrance spray', 'Trim, vents, and glass detailed by hand']
     },
     exterior: {
-      num: '05', title: 'Wet Sanding & Polish', img: 'images/service-exterior.jpg',
+      num: '05', title: 'Wet Sanding', img: null,
       desc: "For paint that's too far gone for standard correction alone — heavy oxidation, orange peel, or deep clear coat damage. We level the surface with progressively finer wet-sand grits, then machine polish it back to a mirror-smooth, glass-like finish.",
       list: ['Wet-sanding levels orange peel and heavy oxidation that compounding can’t touch', 'Progressive fine-grit sanding keeps the clear coat even across every panel', 'Multi-stage polishing restores full gloss and clarity after sanding', 'Reserved for paint that needs more correction than a standard polish']
     },
@@ -913,6 +943,16 @@
       num: '06', title: 'Mobile Detailing', img: 'images/service-mobile.jpg',
       desc: "The same shop-level process and equipment, brought to your driveway, office lot, or job site. We run self-contained water and power, so nothing about the result is a compromise for the convenience.",
       list: ['We come to you — home, office, or job site', 'Self-contained water and power, no hookups needed', 'Same standard of work as our in-shop services', 'Flexible scheduling, seven days a week']
+    },
+    exteriordetail: {
+      num: '07', title: 'Exterior Detail', img: 'images/service-exterior.jpg',
+      desc: "A full hand wash and decontamination pass that gets the paint genuinely clean — foam bath, chemical decontamination, and a clay bar to pull embedded contaminants out of the surface, finished with a protective wipe-down.",
+      list: ['Two-bucket foam hand wash to avoid marring the paint', 'Chemical decontamination and clay bar to strip embedded contaminants', 'Wheel and tire detail, including wheel wells', 'Streak-free glass and trim dressing to finish']
+    },
+    fulldetail: {
+      num: '08', title: 'Full Detail', img: null,
+      desc: "Our most complete service — a full exterior detail paired with a full interior detail in one visit, so the whole vehicle gets brought back to the same standard, inside and out.",
+      list: ['Everything in Exterior Detail: wash, decontamination, wheel & glass detail', 'Everything in Interior Detail: extraction, conditioning, sanitizing', 'One visit, one price, done together', 'The best starting point before paint correction or ceramic coating']
     }
   };
 
@@ -1129,13 +1169,23 @@
   var ceramicProcessNote = document.getElementById('ceramicProcessNote');
   var ceramicRecommend = document.getElementById('ceramicRecommend');
   var ceramicProcess = null;
+  var ceramicItemsNote = document.getElementById('ceramicItemsNote');
+  var ceramicInteriorGrid = document.getElementById('ceramicInteriorGrid');
+  var ceramicItems = [];
+  var ceramicInteriorType = null;
   function updateCeramicProcessNote(){
     var showIt = needs.indexOf('ceramic') > -1;
     ceramicProcessNote.style.display = showIt ? 'block' : 'none';
+    ceramicItemsNote.style.display = showIt ? 'block' : 'none';
     if (!showIt){
       ceramicProcess = null;
       ceramicRecommend.classList.remove('show');
       document.querySelectorAll('#ceramicProcessGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
+      ceramicItems = [];
+      ceramicInteriorType = null;
+      ceramicInteriorGrid.style.display = 'none';
+      document.querySelectorAll('#ceramicItemsGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
+      document.querySelectorAll('#ceramicInteriorGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
     }
   }
   document.querySelectorAll('#ceramicProcessGrid .opt').forEach(function(btn){
@@ -1144,6 +1194,28 @@
       btn.classList.add('selected');
       ceramicProcess = btn.dataset.process;
       ceramicRecommend.classList.toggle('show', ceramicProcess === 'unsure');
+    });
+  });
+  document.querySelectorAll('#ceramicItemsGrid .opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      btn.classList.toggle('selected');
+      var v = btn.dataset.item;
+      var i = ceramicItems.indexOf(v);
+      if (btn.classList.contains('selected') && i === -1) ceramicItems.push(v);
+      if (!btn.classList.contains('selected') && i > -1) ceramicItems.splice(i,1);
+      var wantsInterior = ceramicItems.indexOf('interior') > -1;
+      ceramicInteriorGrid.style.display = wantsInterior ? 'grid' : 'none';
+      if (!wantsInterior){
+        ceramicInteriorType = null;
+        document.querySelectorAll('#ceramicInteriorGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
+      }
+    });
+  });
+  document.querySelectorAll('#ceramicInteriorGrid .opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#ceramicInteriorGrid .opt').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      ceramicInteriorType = btn.dataset.interior;
     });
   });
   document.querySelectorAll('#needGrid .need').forEach(function(btn){
@@ -1212,8 +1284,10 @@
 
   /* submit */
   var QUOTE_RECIPIENT = 'fauquier.mobile.detailing@gmail.com';
-  var NEED_LABELS = { paint:'Paint Correction', ceramic:'Ceramic Coating', headlight:'Headlight Restoration', interior:'Interior Detailing', exterior:'Wet Sanding & Polish', unsure:'Not Sure Yet' };
+  var NEED_LABELS = { paint:'Paint Correction', ceramic:'Ceramic Coating', headlight:'Headlight Restoration', interior:'Interior Detail', exterior:'Wet Sanding', exteriordetail:'Exterior Detail', fulldetail:'Full Detail', unsure:'Not Sure Yet' };
   var PROCESS_LABELS = { 'one-step':'One-Step', hybrid:'Hybrid', 'two-step':'Two-Step', unsure:'Not sure — recommend Hybrid' };
+  var CERAMIC_ITEM_LABELS = { wheels:'Wheels', paint:'Paint', glass:'Glass', interior:'Interior' };
+  var CERAMIC_INTERIOR_LABELS = { cloth:'Cloth Coating', leathervinyl:'Leather / Vinyl Coating' };
   var VEHICLE_LABELS = { sedan:'Sedan', coupe:'Coupe', suv:'SUV', truck:'Truck', van:'Van', exotic:'Exotic / Sports', bike:'Bike', trailer:'Trailer', boat:'Boat', aircraft:'Aircraft' };
   function vehicleSummary(){
     if (LENGTH_TYPES.indexOf(vehicleType) > -1){
@@ -1256,6 +1330,7 @@
       '',
       'Vehicle: ' + (vehicleDetail || 'Not specified') + (vehicleType ? ' (' + (VEHICLE_LABELS[vehicleType] || vehicleType) + ')' : ''),
       'Needs: ' + (needs.length ? needs.map(function(k){ return NEED_LABELS[k] || k; }).join(', ') : 'Not specified') + (hasClothSeats ? ' — has cloth seats' : ''),
+      (needs.indexOf('ceramic') > -1 ? 'Ceramic coated items: ' + (ceramicItems.length ? ceramicItems.map(function(k){ return CERAMIC_ITEM_LABELS[k] || k; }).join(', ') : 'Not specified') + (ceramicInteriorType ? ' (' + (CERAMIC_INTERIOR_LABELS[ceramicInteriorType] || ceramicInteriorType) + ')' : '') : null),
       (needs.indexOf('ceramic') > -1 ? 'Ceramic process: ' + (ceramicProcess ? (PROCESS_LABELS[ceramicProcess] || ceramicProcess) : 'Not specified') : null),
       'Photos attached in-app: ' + photoCount + (photoCount ? ' (ask the customer to text or re-send these — email links can’t carry the files)' : ''),
       '',
