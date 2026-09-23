@@ -16,9 +16,9 @@ const mono = JetBrains_Mono({
 });
 
 const siteUrl = "https://nextgenclosersai.vercel.app";
-const title = "NextGen Closers AI — AI Systems That Run Your Front Office";
+const title = "NextGen Closers AI — Remote AI Automation for Service Businesses";
 const description =
-  "NextGen Closers AI builds AI-powered operating systems that capture leads, respond to customers, automate follow-up, and keep your business moving. Try the live demos before you talk to us.";
+  "NextGen Closers AI builds AI-powered systems for service-based businesses — capturing leads, responding to customers, and automating follow-up. Fully remote, working with clients anywhere. Try the live demos before you talk to us.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -29,6 +29,8 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "AI automation",
+    "AI automation for service businesses",
+    "remote AI automation company",
     "business automation systems",
     "AI receptionist",
     "missed call recovery",
@@ -75,6 +77,7 @@ const structuredData = {
   description,
   knowsAbout: [
     "AI automation",
+    "AI automation for service businesses",
     "AI receptionist",
     "missed call recovery",
     "lead qualification automation",
@@ -86,6 +89,10 @@ const structuredData = {
     "@type": "Country",
     name: "United States",
   },
+  audience: {
+    "@type": "Audience",
+    audienceType: "Service-based businesses",
+  },
   makesOffer: {
     "@type": "Offer",
     itemOffered: {
@@ -93,7 +100,11 @@ const structuredData = {
       name: "AI Business Automation Systems",
       serviceType: "AI automation consulting and implementation",
       description:
-        "Custom AI systems for lead qualification, missed call recovery, follow-up automation, and customer reactivation.",
+        "Custom AI systems for lead qualification, missed call recovery, follow-up automation, and customer reactivation, delivered fully remotely for service-based businesses of any kind.",
+      audience: {
+        "@type": "Audience",
+        audienceType: "Service-based businesses",
+      },
       areaServed: {
         "@type": "Country",
         name: "United States",

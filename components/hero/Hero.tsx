@@ -19,7 +19,7 @@ export function Hero() {
         <div>
           <FadeIn>
             <span className="inline-flex items-center gap-2 rounded-full border border-ink-600 bg-ink-900 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-mist-400">
-              AI Operations Infrastructure
+              Remote AI Automation for Service Businesses
             </span>
           </FadeIn>
           <FadeIn delay={0.08}>
@@ -31,8 +31,9 @@ export function Hero() {
           </FadeIn>
           <FadeIn delay={0.16}>
             <p className="mt-6 max-w-xl text-balance text-lg leading-relaxed text-mist-400">
-              We build AI-powered systems that capture leads, respond to customers, automate
-              follow-up, and keep your business moving — without adding unnecessary manual work.
+              We build AI-powered systems for service-based businesses that capture leads, respond
+              to customers, automate follow-up, and keep your business moving — without adding
+              unnecessary manual work. Fully remote — we work with clients anywhere.
             </p>
           </FadeIn>
           <FadeIn delay={0.24} className="mt-9 flex flex-col gap-3 sm:flex-row">

@@ -34,4 +34,14 @@ export const faqItems: FaqItem[] = [
     answer:
       "A generic chatbot answers questions on a website widget. The systems here are built around a specific business process end-to-end — capturing a lead, qualifying it, updating your CRM, and following up on a schedule — across phone, text, and email, not just a chat window.",
   },
+  {
+    question: "Do you work with businesses outside your local area?",
+    answer:
+      "Yes — everything is delivered remotely, so location isn't a factor. Implementation, setup, and ongoing support all happen without an in-person visit, and clients are worked with anywhere in the United States.",
+  },
+  {
+    question: "What types of businesses do you work with?",
+    answer:
+      "Any service-based business — home services, construction, automotive, medical, dental, legal, real estate, and professional services are the most common, but the underlying systems (lead capture, follow-up, scheduling) apply to any business that books appointments or quotes work.",
+  },
 ];
