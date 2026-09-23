@@ -8,6 +8,7 @@ import { AutomationBuilder } from "@/components/builder/AutomationBuilder";
 import { LiveOpsDashboard } from "@/components/dashboard/LiveOpsDashboard";
 import { HowItWorks } from "@/components/process/HowItWorks";
 import { CaseStudies } from "@/components/results/CaseStudies";
+import { FaqSection } from "@/components/faq/FaqSection";
 import { FinalCTA } from "@/components/cta/FinalCTA";
 import { BookingSection } from "@/components/contact/BookingSection";
 import { Footer } from "@/components/footer/Footer";
@@ -26,6 +27,7 @@ export default function Home() {
         <LiveOpsDashboard />
         <HowItWorks />
         <CaseStudies />
+        <FaqSection />
         <FinalCTA />
         <BookingSection />
       </main>

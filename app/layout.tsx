@@ -70,9 +70,22 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "NextGen Closers AI",
+  alternateName: "NextGen Closers",
   url: siteUrl,
   description,
-  sameAs: [],
+  knowsAbout: [
+    "AI automation",
+    "AI receptionist",
+    "missed call recovery",
+    "lead qualification automation",
+    "CRM automation",
+    "customer follow-up automation",
+    "customer reactivation campaigns",
+  ],
+  areaServed: {
+    "@type": "Country",
+    name: "United States",
+  },
   makesOffer: {
     "@type": "Offer",
     itemOffered: {
@@ -81,6 +94,10 @@ const structuredData = {
       serviceType: "AI automation consulting and implementation",
       description:
         "Custom AI systems for lead qualification, missed call recovery, follow-up automation, and customer reactivation.",
+      areaServed: {
+        "@type": "Country",
+        name: "United States",
+      },
     },
   },
 };
