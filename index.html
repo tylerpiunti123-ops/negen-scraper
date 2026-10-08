@@ -790,8 +790,8 @@
               <div class="tick">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
               </div>
-              <h3 class="step-title">Almost done.</h3>
-              <p class="lead" style="margin:10px auto 0;">Your email app should be opening now with your request filled in — just hit send and we'll follow up with a quote shortly. If nothing opened, email us directly at <a href="mailto:fauquier.mobile.detailing@gmail.com" style="color:var(--redlight);">fauquier.mobile.detailing@gmail.com</a> or call 540-878-8636.</p>
+              <h3 class="step-title">Request sent.</h3>
+              <p class="lead" style="margin:10px auto 0;">We've got your request and will follow up with a quote shortly. Questions in the meantime? Email <a href="mailto:fauquier.mobile.detailing@gmail.com" style="color:var(--redlight);">fauquier.mobile.detailing@gmail.com</a> or call 540-878-8636.</p>
             </div>
           </div>
         </div>
@@ -1290,6 +1290,7 @@
 
   /* submit */
   var QUOTE_RECIPIENT = 'fauquier.mobile.detailing@gmail.com';
+  var WEB3FORMS_KEY = '841b543f-c2d9-4bd1-a408-e805bb4de9f4';
   var NEED_LABELS = { paint:'Paint Correction', ceramic:'Ceramic Coating', headlight:'Headlight Restoration', interior:'Interior Detail', exterior:'Wet Sanding', exteriordetail:'Exterior Detail', fulldetail:'Full Detail', unsure:'Not Sure Yet' };
   var PROCESS_LABELS = { 'one-step':'One-Step', hybrid:'Hybrid', 'two-step':'Two-Step', unsure:'Not sure — recommend Hybrid' };
   var CERAMIC_ITEM_LABELS = { wheels:'Wheels', paint:'Paint', glass:'Glass', interior:'Interior' };
@@ -1310,6 +1311,7 @@
     return [year, make, model].filter(Boolean).join(' ');
   }
   document.getElementById('submitBtn').addEventListener('click', function(){
+    var submitBtn = this;
     var name = document.getElementById('cName').value.trim();
     var phone = document.getElementById('cPhone').value.trim();
     var email = document.getElementById('cEmail').value.trim();
@@ -1343,11 +1345,35 @@
       'Notes: ' + (notes || '—')
     ];
     var subject = 'Quote request — ' + name + (vehicleDetail ? ' (' + vehicleDetail + ')' : '');
-    var mailto = 'mailto:' + encodeURIComponent(QUOTE_RECIPIENT) +
-      '?subject=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(lines.filter(function(l){ return l !== null; }).join('\n'));
-    window.location.href = mailto;
-    showStep('thanks', 1);
+    var message = lines.filter(function(l){ return l !== null; }).join('\n');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: subject,
+        from_name: name,
+        email: email,
+        replyto: email,
+        message: message
+      })
+    }).then(function(res){ return res.json(); }).then(function(data){
+      if (data && data.success){
+        showStep('thanks', 1);
+      } else {
+        throw new Error(data && data.message ? data.message : 'Submission failed');
+      }
+    }).catch(function(){
+      err.textContent = 'Something went wrong sending your request. Please email us directly at ' + QUOTE_RECIPIENT + ' or call 540-878-8636.';
+      err.style.display = 'block';
+    }).finally(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Get Your Quote';
+    });
   });
 })();
 </script>
