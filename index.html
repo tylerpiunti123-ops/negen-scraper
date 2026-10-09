@@ -770,12 +770,13 @@
             <p class="eyebrow" style="margin-bottom:2px;">Step 4 of 4</p>
             <h3 class="step-title">Get Your Quote</h3>
             <div class="field-grid" style="grid-template-columns:1fr 1fr;">
-              <input type="text" id="cName" placeholder="Full name">
-              <input type="tel" id="cPhone" placeholder="Phone">
+              <input type="text" id="cName" placeholder="Full name *" required>
+              <input type="tel" id="cPhone" placeholder="Phone *" required>
             </div>
-            <div style="margin-top:10px;"><input type="email" id="cEmail" placeholder="Email"></div>
+            <div style="margin-top:10px;"><input type="email" id="cEmail" placeholder="Email *" required></div>
             <div style="margin-top:10px;"><input type="text" id="cAddress" placeholder="Service address (where we'll come detail it)"></div>
             <div style="margin-top:10px;"><textarea id="cNotes" placeholder="Anything else we should know?"></textarea></div>
+            <p style="font-size:12px; color:var(--mist-dim); margin-top:8px;">* Required — we'll text or call you to confirm your appointment.</p>
             <p class="deposit-note">A 50% deposit is required to reserve your appointment, fully refundable if canceled at least 2 days beforehand.</p>
             <p id="quoteError" style="color:var(--redlight); font-size:13px; margin-top:10px; display:none;"></p>
             <div class="step-footer">
