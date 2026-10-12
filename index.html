@@ -454,7 +454,7 @@
     <div class="hero-stripe" aria-hidden="true"></div>
     <div class="hero-stage" id="heroStage">
       <div class="gloss hero-panel" id="heroPanel">
-        <video id="heroVideo" muted playsinline preload="auto" poster="images/hero-rotation-poster.jpg" aria-label="Fully equipped mobile detailing van rotating to reveal the rig inside">
+        <video id="heroVideo" muted playsinline preload="metadata" poster="images/hero-rotation-poster.jpg" aria-label="Fully equipped mobile detailing van rotating to reveal the rig inside">
           <source src="video/hero-rotation.mp4" type="video/mp4">
         </video>
         <span class="badge bottom-badge" id="heroBottomBadge">Full Correction · Ceramic Finish</span>
@@ -1037,6 +1037,8 @@
      toward the real scroll position, so the van's rotation, the zoom and the parallax
      all glide instead of jumping in lockstep with each raw scroll tick. */
   var heroVideo = document.getElementById('heroVideo');
+  heroVideo.muted = true;
+  heroVideo.defaultMuted = true;
   var heroBottomBadge = document.getElementById('heroBottomBadge');
   var scrollCue = document.getElementById('scrollCue');
   var heroCopy = document.getElementById('heroCopy');
@@ -1047,7 +1049,8 @@
   var heroVideoDuration = 8;
   var heroVideoReady = false;
 
-  heroVideo.addEventListener('loadedmetadata', function(){
+  function heroVideoBecomeReady(){
+    if (heroVideoReady) return;
     heroVideoDuration = heroVideo.duration || 8;
     heroVideo.currentTime = 0.001;
     // priming play+pause unlocks frame-accurate seeking on iOS Safari
@@ -1058,7 +1061,20 @@
       heroVideoReady = true;
       if (reduced) heroVideo.currentTime = heroVideoDuration - 0.05;
     }
+  }
+  ['loadedmetadata','loadeddata','canplay'].forEach(function(ev){
+    heroVideo.addEventListener(ev, heroVideoBecomeReady);
   });
+  // some connections silently drop/abort the initial video fetch without ever
+  // firing a load event — if that happens, force a fresh request a couple of
+  // times rather than leaving the hero frozen on the poster frame forever
+  var heroVideoLoadRetries = 0;
+  var heroVideoRetryTimer = setInterval(function(){
+    if (heroVideoReady){ clearInterval(heroVideoRetryTimer); return; }
+    if (heroVideoLoadRetries >= 3){ clearInterval(heroVideoRetryTimer); return; }
+    heroVideoLoadRetries++;
+    heroVideo.load();
+  }, 2500);
 
   function heroRawProgress(){
     var r = heroWrap.getBoundingClientRect();
