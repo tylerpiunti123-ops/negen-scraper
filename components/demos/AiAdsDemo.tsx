@@ -1,24 +1,28 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Loader2, Play, RotateCcw, Target } from "lucide-react";
 import {
-  adCampaignGoal,
   adMetrics,
   adPhases,
-  adTargeting,
-  adVariations,
+  buildAdCampaignGoal,
+  buildAdTargeting,
+  buildAdVariations,
   budgetReallocation,
 } from "@/data/aiAdsCampaign";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { Button } from "@/components/ui/Button";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
 import { cn, formatCurrency } from "@/lib/utils";
 
 type Phase = "idle" | "running" | "live";
 
-export function AiAdsDemo() {
+export function AiAdsDemo({ niche = DEFAULT_NICHE }: { niche?: string }) {
+  const adCampaignGoal = useMemo(() => buildAdCampaignGoal(niche), [niche]);
+  const adVariations = useMemo(() => buildAdVariations(niche), [niche]);
+  const adTargeting = useMemo(() => buildAdTargeting(niche), [niche]);
   const [phase, setPhase] = useState<Phase>("idle");
   const [phaseIndex, setPhaseIndex] = useState(-1);
   const [showResults, setShowResults] = useState(false);

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Loader2, Sparkles, Zap } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
 import { cn } from "@/lib/utils";
 
 type Phase = "idle" | "detecting" | "generating" | "sent" | "done";
@@ -13,7 +14,7 @@ const followUpMessage =
 
 const finishSteps = ["Follow-up sent", "CRM updated", "Next follow-up scheduled"];
 
-export function QuoteFollowUpDemo() {
+export function QuoteFollowUpDemo({ niche = DEFAULT_NICHE }: { niche?: string }) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [finishedCount, setFinishedCount] = useState(0);
   const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -68,7 +69,7 @@ export function QuoteFollowUpDemo() {
           <div className="mt-4 grid grid-cols-3 gap-4 border-t border-ink-700 pt-4">
             <div>
               <p className="text-xs text-mist-500">Project</p>
-              <p className="mt-1 text-sm text-paper-50">Garage Floor</p>
+              <p className="mt-1 text-sm text-paper-50">{niche}</p>
             </div>
             <div>
               <p className="text-xs text-mist-500">Quote</p>

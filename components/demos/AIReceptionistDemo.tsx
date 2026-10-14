@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CalendarCheck2, Send } from "lucide-react";
 import {
   extractName,
   extractPhone,
-  getStep,
-  receptionistSteps,
+  getReceptionistSteps,
+  DEFAULT_NICHE,
   type ReceptionistAnswers,
 } from "@/lib/conversationEngine";
 import { Button } from "@/components/ui/Button";
@@ -20,7 +20,14 @@ interface ChatMessage {
   text: string;
 }
 
-export function AIReceptionistDemo({ onComplete }: { onComplete?: () => void }) {
+export function AIReceptionistDemo({
+  niche = DEFAULT_NICHE,
+  onComplete,
+}: {
+  niche?: string;
+  onComplete?: () => void;
+}) {
+  const steps = useMemo(() => getReceptionistSteps(niche), [niche]);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState<ReceptionistAnswers>({});
@@ -52,7 +59,7 @@ export function AIReceptionistDemo({ onComplete }: { onComplete?: () => void }) 
   useEffect(() => {
     if (initializedRef.current) return;
     initializedRef.current = true;
-    const step = getStep(0);
+    const step = steps[0];
     if (step) {
       void pushAiMessage(step.getMessage({}));
     }
@@ -64,7 +71,7 @@ export function AIReceptionistDemo({ onComplete }: { onComplete?: () => void }) 
   }, [messages, typing]);
 
   async function handleAnswer(value: string) {
-    const step = getStep(stepIndex);
+    const step = steps[stepIndex];
     if (!step) return;
 
     setMessages((prev) => [...prev, { id: nextId(), role: "user", text: value }]);
@@ -73,7 +80,7 @@ export function AIReceptionistDemo({ onComplete }: { onComplete?: () => void }) 
     setTextValue("");
 
     const nextIndex = stepIndex + 1;
-    const nextStep = getStep(nextIndex);
+    const nextStep = steps[nextIndex];
 
     if (nextStep) {
       setStepIndex(nextIndex);
@@ -87,8 +94,8 @@ export function AIReceptionistDemo({ onComplete }: { onComplete?: () => void }) 
     }
   }
 
-  const currentStep = getStep(stepIndex);
-  const progress = Math.min(stepIndex, receptionistSteps.length);
+  const currentStep = steps[stepIndex];
+  const progress = Math.min(stepIndex, steps.length);
 
   return (
     <div className="flex h-full flex-col">
@@ -98,7 +105,7 @@ export function AIReceptionistDemo({ onComplete }: { onComplete?: () => void }) 
         </div>
         <div className="flex items-center gap-4">
           <span className="font-mono text-[11px] text-mist-500">
-            Step {Math.min(progress + 1, receptionistSteps.length)}/{receptionistSteps.length}
+            Step {Math.min(progress + 1, steps.length)}/{steps.length}
           </span>
           <StatusBadge status="online" pulse />
         </div>

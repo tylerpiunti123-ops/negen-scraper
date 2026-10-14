@@ -12,6 +12,8 @@ export const campaignStages: CampaignStage[] = [
   { id: "route", label: "Interested customers routed to sales" },
 ];
 
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
+
 export interface SampleConversation {
   id: string;
   customer: string;
@@ -21,32 +23,33 @@ export interface SampleConversation {
   interested: boolean;
 }
 
-export const sampleConversations: SampleConversation[] = [
-  {
-    id: "c1",
-    customer: "Denise Carter",
-    lastService: "Driveway sealing — 14 months ago",
-    outbound:
-      "Hi Denise! It's been a while since your last driveway service — we're offering priority scheduling for past customers this month. Want us to take a look?",
-    reply: "Actually yes, it's looking rough again. Can you send over some times?",
-    interested: true,
-  },
-  {
-    id: "c2",
-    customer: "Marcus Webb",
-    lastService: "Garage floor coating — 18 months ago",
-    outbound:
-      "Hey Marcus, checking in on the garage floor we coated last year — still holding up well? We're doing complimentary touch-up assessments this month.",
-    reply: "It's fine for now, but thanks for checking in!",
-    interested: false,
-  },
-  {
-    id: "c3",
-    customer: "Priya Nair",
-    lastService: "Countertop install — 13 months ago",
-    outbound:
-      "Hi Priya! Hope the new countertops are treating you well. We're reaching out to past clients with a referral offer this month — interested?",
-    reply: "We might actually need a matching backsplash done. Let's talk.",
-    interested: true,
-  },
-];
+export function buildSampleConversations(niche: string = DEFAULT_NICHE): SampleConversation[] {
+  const service = (niche.trim() || DEFAULT_NICHE).toLowerCase();
+
+  return [
+    {
+      id: "c1",
+      customer: "Denise Carter",
+      lastService: `${niche} — 14 months ago`,
+      outbound: `Hi Denise! It's been a while since your last ${service} service — we're offering priority scheduling for past customers this month. Want us to take a look?`,
+      reply: "Actually yes, we could use that again. Can you send over some times?",
+      interested: true,
+    },
+    {
+      id: "c2",
+      customer: "Marcus Webb",
+      lastService: `${niche} — 18 months ago`,
+      outbound: `Hey Marcus, checking in since your last ${service} service — still happy with how everything turned out? We're doing complimentary touch-up assessments this month.`,
+      reply: "It's fine for now, but thanks for checking in!",
+      interested: false,
+    },
+    {
+      id: "c3",
+      customer: "Priya Nair",
+      lastService: `${niche} — 13 months ago`,
+      outbound: `Hi Priya! Hope everything's still holding up well. We're reaching out to past clients with a referral offer this month — interested?`,
+      reply: "We might actually need something similar done again. Let's talk.",
+      interested: true,
+    },
+  ];
+}

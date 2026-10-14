@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, PhoneMissed, Play, RotateCcw, Sparkles } from "lucide-react";
-import { missedCallSequence } from "@/data/missedCallSequence";
+import { buildMissedCallSequence } from "@/data/missedCallSequence";
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 type Phase = "idle" | "running" | "done";
 
-export function MissedCallRecoveryDemo() {
+export function MissedCallRecoveryDemo({ niche = DEFAULT_NICHE }: { niche?: string }) {
+  const missedCallSequence = useMemo(() => buildMissedCallSequence(niche), [niche]);
   const [phase, setPhase] = useState<Phase>("idle");
   const [visibleCount, setVisibleCount] = useState(0);
   const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);

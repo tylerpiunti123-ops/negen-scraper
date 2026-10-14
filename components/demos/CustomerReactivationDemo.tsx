@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Loader2, Rocket, ThumbsUp } from "lucide-react";
-import { campaignStages, sampleConversations } from "@/data/reactivationCampaign";
+import { buildSampleConversations, campaignStages } from "@/data/reactivationCampaign";
 import { Button } from "@/components/ui/Button";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
 import { cn } from "@/lib/utils";
 
 type Phase = "idle" | "running" | "done";
@@ -15,7 +16,8 @@ const ELIGIBLE_CUSTOMERS = 312;
 const RESPONSES = 47;
 const INTERESTED = 12;
 
-export function CustomerReactivationDemo() {
+export function CustomerReactivationDemo({ niche = DEFAULT_NICHE }: { niche?: string }) {
+  const sampleConversations = useMemo(() => buildSampleConversations(niche), [niche]);
   const [phase, setPhase] = useState<Phase>("idle");
   const [stageIndex, setStageIndex] = useState(-1);
   const [visibleConvos, setVisibleConvos] = useState(0);

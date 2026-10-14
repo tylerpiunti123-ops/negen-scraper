@@ -1,7 +1,10 @@
 import type { LucideIcon } from "lucide-react";
 import { Instagram, MapPin, Search } from "lucide-react";
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
 
-export const adCampaignGoal = "Generate leads for garage floor coating";
+export function buildAdCampaignGoal(niche: string = DEFAULT_NICHE): string {
+  return `Generate leads for ${(niche.trim() || DEFAULT_NICHE).toLowerCase()}`;
+}
 
 export const adPhases = [
   "Analyzing business & service area",
@@ -17,33 +20,42 @@ export interface AdVariation {
   body: string;
 }
 
-export const adVariations: AdVariation[] = [
-  {
-    platform: "Google Search",
-    icon: Search,
-    headline: "Garage Floor Coating — Free Estimate",
-    body: "Durable epoxy coatings installed in a day. Licensed & insured. Book a free on-site estimate.",
-  },
-  {
-    platform: "Google Local Services",
-    icon: MapPin,
-    headline: "Top-Rated Garage Floor Pros Near You",
-    body: "Verified & background-checked. See real reviews from homeowners in your area.",
-  },
-  {
-    platform: "Facebook / Instagram",
-    icon: Instagram,
-    headline: "Transform Your Garage This Weekend",
-    body: "See why homeowners are switching to epoxy floors. Get a free quote in 60 seconds.",
-  },
-];
+export function buildAdVariations(niche: string = DEFAULT_NICHE): AdVariation[] {
+  const service = niche.trim() || DEFAULT_NICHE;
+  const serviceLower = service.toLowerCase();
 
-export const adTargeting = [
-  "15-mile service radius",
-  "Homeowners, ages 30–65",
-  "Keywords: garage floor coating, epoxy flooring near me",
-  "Recently searched home improvement",
-];
+  return [
+    {
+      platform: "Google Search",
+      icon: Search,
+      headline: `${service} — Free Estimate`,
+      body: `Quality ${serviceLower} you can trust. Licensed & insured. Book a free on-site estimate.`,
+    },
+    {
+      platform: "Google Local Services",
+      icon: MapPin,
+      headline: `Top-Rated ${service} Pros Near You`,
+      body: "Verified & background-checked. See real reviews from customers in your area.",
+    },
+    {
+      platform: "Facebook / Instagram",
+      icon: Instagram,
+      headline: `Get ${service} Done This Week`,
+      body: `See why customers are choosing us for ${serviceLower}. Get a free quote in 60 seconds.`,
+    },
+  ];
+}
+
+export function buildAdTargeting(niche: string = DEFAULT_NICHE): string[] {
+  const serviceLower = (niche.trim() || DEFAULT_NICHE).toLowerCase();
+
+  return [
+    "15-mile service radius",
+    "Homeowners, ages 30–65",
+    `Keywords: ${serviceLower}, ${serviceLower} near me`,
+    "Recently searched home improvement",
+  ];
+}
 
 export interface AdMetric {
   label: string;

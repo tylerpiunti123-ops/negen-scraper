@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Bot, Clock } from "lucide-react";
-import { followUpTimeline, pipelineStages } from "@/data/leadFollowUpTimeline";
+import { buildFollowUpTimeline, pipelineStages } from "@/data/leadFollowUpTimeline";
+import { DEFAULT_NICHE } from "@/lib/conversationEngine";
 import { cn } from "@/lib/utils";
 
-export function LeadFollowUpDemo() {
+export function LeadFollowUpDemo({ niche = DEFAULT_NICHE }: { niche?: string }) {
+  const followUpTimeline = useMemo(() => buildFollowUpTimeline(niche), [niche]);
   const [activeIndex, setActiveIndex] = useState(0);
   const activeStep = followUpTimeline[activeIndex] ?? followUpTimeline[0]!;
   const activeStageIdx = pipelineStages.indexOf(activeStep.stage);
@@ -41,7 +43,7 @@ export function LeadFollowUpDemo() {
 
         <div className="mb-6 rounded-xl border border-ink-700 bg-ink-900/60 p-4">
           <p className="text-xs text-mist-500">Lead</p>
-          <p className="mt-1 text-sm font-semibold text-paper-50">Jordan Ellis — Kitchen Remodel</p>
+          <p className="mt-1 text-sm font-semibold text-paper-50">Jordan Ellis — {niche}</p>
           <p className="mt-0.5 text-xs text-mist-400">Currently in stage: {activeStep.stage}</p>
         </div>
 
