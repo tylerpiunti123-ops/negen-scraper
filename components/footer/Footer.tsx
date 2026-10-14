@@ -1,4 +1,6 @@
 import { navLinks } from "@/data/navigation";
+import { servicePages } from "@/data/servicePages";
+import { nichePages } from "@/data/nichePages";
 import { Container } from "@/components/ui/Container";
 
 export function Footer() {
@@ -38,15 +40,42 @@ export function Footer() {
               <p className="text-xs uppercase tracking-widest text-mist-500">Get Started</p>
               <ul className="mt-3 space-y-2">
                 <li>
-                  <a href="#demos" className="text-sm text-mist-400 hover:text-paper-50">
+                  <a href="/#demos" className="text-sm text-mist-400 hover:text-paper-50">
                     Try AI Demos
                   </a>
                 </li>
                 <li>
-                  <a href="#contact" className="text-sm text-mist-400 hover:text-paper-50">
+                  <a href="/#contact" className="text-sm text-mist-400 hover:text-paper-50">
                     Book A Call
                   </a>
                 </li>
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-mist-500">Services</p>
+              <ul className="mt-3 space-y-2">
+                {servicePages.map((page) => (
+                  <li key={page.slug}>
+                    <a href={`/${page.slug}`} className="text-sm text-mist-400 hover:text-paper-50">
+                      {page.navLabel}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-mist-500">Industries</p>
+              <ul className="mt-3 space-y-2">
+                {nichePages.map((page) => (
+                  <li key={page.slug}>
+                    <a
+                      href={`/industries/${page.slug}`}
+                      className="text-sm text-mist-400 hover:text-paper-50"
+                    >
+                      {page.navLabel}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

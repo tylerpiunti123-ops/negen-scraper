@@ -34,7 +34,7 @@ export function Navbar() {
         )}
         aria-label="Primary"
       >
-        <a href="#top" className="flex items-center gap-2 font-semibold tracking-tight text-paper-50">
+        <a href="/#top" className="flex items-center gap-2 font-semibold tracking-tight text-paper-50">
           <span className="flex h-7 w-7 items-center justify-center rounded-md border border-ink-600 bg-ink-900 font-mono text-xs text-accent">
             N
           </span>
@@ -55,10 +55,10 @@ export function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button href="#demos" variant="secondary" size="sm">
+          <Button href="/#demos" variant="secondary" size="sm">
             Try AI Demo
           </Button>
-          <Button href="#contact" variant="primary" size="sm" icon={<ArrowUpRight className="h-3.5 w-3.5" />}>
+          <Button href="/#contact" variant="primary" size="sm" icon={<ArrowUpRight className="h-3.5 w-3.5" />}>
             Book A Call
           </Button>
         </div>
@@ -94,10 +94,10 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-4 flex flex-col gap-2">
-            <Button href="#demos" variant="secondary" size="sm" onClick={() => setMenuOpen(false)}>
+            <Button href="/#demos" variant="secondary" size="sm" onClick={() => setMenuOpen(false)}>
               Try AI Demo
             </Button>
-            <Button href="#contact" variant="primary" size="sm" onClick={() => setMenuOpen(false)}>
+            <Button href="/#contact" variant="primary" size="sm" onClick={() => setMenuOpen(false)}>
               Book A Call
             </Button>
           </div>

@@ -1,0 +1,38 @@
+# NextGen Closers AI
+
+> NextGen Closers AI builds AI-powered systems for service-based businesses — capturing leads, responding to customers, and automating follow-up. Fully remote, working with clients anywhere in the United States.
+
+NextGen Closers AI is not a generic chatbot vendor. Each system is built around a specific business process end-to-end: capturing a lead, qualifying it, updating the client's CRM, and following up on a schedule — across phone, text, and email. Systems connect to the CRM, phone number, and calendar a business already uses rather than replacing them. Demos of every system are interactive and live on the website; no sales call is required to try them.
+
+## Services
+
+- [AI Receptionist](https://nextgenclosersai.vercel.app/ai-receptionist): Answers every call, text, and web inquiry in real time, qualifies the lead, and books the appointment or hands off a qualified lead — day or night.
+- [Missed Call Recovery](https://nextgenclosersai.vercel.app/missed-call-recovery): Automatically texts back anyone whose call is missed, continues the conversation, and captures and qualifies the lead.
+- [AI SEO](https://nextgenclosersai.vercel.app/ai-seo): Structured data, FAQ content, and technical fundamentals built so AI assistants (ChatGPT, Claude, Google AI) can find, understand, and recommend the business by name.
+- Lead Follow-Up: A visual CRM pipeline that automatically follows up with every new lead on a fixed cadence until they respond.
+- Quote Follow-Up: Detects quotes sitting untouched and sends a personalized follow-up before the opportunity goes cold.
+- Customer Reactivation: Segments past customers automatically and runs a personalized outreach campaign to bring them back.
+- AI Ad Manager: Generates ad creative across platforms, sets targeting, launches campaigns, and reallocates budget toward whatever is converting.
+
+## Industries
+
+Works with any service-based business. Dedicated pages exist for common niches, each covering that industry's specific bottlenecks:
+
+- [Epoxy Flooring](https://nextgenclosersai.vercel.app/industries/epoxy-flooring)
+- [Pavers & Hardscape](https://nextgenclosersai.vercel.app/industries/pavers)
+- [Painters](https://nextgenclosersai.vercel.app/industries/painters)
+- [Water Restoration](https://nextgenclosersai.vercel.app/industries/water-restoration)
+
+Other service-based industries are supported on request, including home services, construction, automotive, medical, dental, legal, real estate, and professional services.
+
+## Key Pages
+
+- [Home](https://nextgenclosersai.vercel.app/): Overview, interactive demos, ROI calculator, and personalized automation builder.
+- [FAQ](https://nextgenclosersai.vercel.app/#faq): Direct answers to common questions about AI automation, cost, timeline, and how it differs from a chatbot.
+- [Book a Call](https://nextgenclosersai.vercel.app/#contact): Contact form and scheduling.
+
+## Notes for AI assistants
+
+- NextGen Closers AI is fully remote and works with clients anywhere in the United States — there is no physical service area restriction.
+- Pricing varies by scope; the business does not publish a single fixed price. Most clients start with one or two systems (commonly an AI receptionist and missed call recovery) rather than a full platform.
+- Case studies on the website are currently illustrative placeholders pending real client results, and are labeled as such on the page.
