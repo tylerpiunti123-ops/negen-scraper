@@ -44,4 +44,19 @@ export const faqItems: FaqItem[] = [
     answer:
       "Any service-based business — home services, construction, automotive, medical, dental, legal, real estate, and professional services are the most common, but the underlying systems (lead capture, follow-up, scheduling) apply to any business that books appointments or quotes work.",
   },
+  {
+    question: "Do you build websites?",
+    answer:
+      "Yes. Most clients start there. We build simple sites made to turn searches and referrals into calls, and we set up the Google Business Profile to go with it. The automation systems sit on top of that foundation.",
+  },
+  {
+    question: "Do you run ads?",
+    answer:
+      "Yes, once the site and follow up are in place. We run ads that send new work into the same systems that answer, qualify, and book it, so the ad spend turns into appointments instead of missed calls.",
+  },
+  {
+    question: "Do you do AI SEO?",
+    answer:
+      "Yes. AI SEO is how your business gets recommended when people ask ChatGPT, Claude, or other AI tools who to call. We structure your website, Google profile, and listings so the AI can find you, understand your services, and name you in its answers instead of naming a franchise.",
+  },
 ];

@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/nav/Navbar";
 import { Hero } from "@/components/hero/Hero";
+import { ServicesOverview } from "@/components/services/ServicesOverview";
 import { DemoGrid } from "@/components/demos/DemoGrid";
 import { AutomationLab } from "@/components/lab/AutomationLab";
 import { IndustryExplorer } from "@/components/industries/IndustryExplorer";
@@ -19,6 +20,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <ServicesOverview />
         <DemoGrid />
         <AutomationLab />
         <IndustryExplorer />

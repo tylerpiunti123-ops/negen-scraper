@@ -6,13 +6,14 @@ NextGen Closers AI is not a generic chatbot vendor. Each system is built around 
 
 ## Services
 
+- Websites & Google Business Profile: A simple, fast website built to turn searches and referrals into calls, paired with a Google Business Profile set up to show up when someone searches what the business does. Most clients start here before adding automation.
 - [AI Receptionist](https://nextgenclosersai.vercel.app/ai-receptionist): Answers every call, text, and web inquiry in real time, qualifies the lead, and books the appointment or hands off a qualified lead — day or night.
 - [Missed Call Recovery](https://nextgenclosersai.vercel.app/missed-call-recovery): Automatically texts back anyone whose call is missed, continues the conversation, and captures and qualifies the lead.
-- [AI SEO](https://nextgenclosersai.vercel.app/ai-seo): Structured data, FAQ content, and technical fundamentals built so AI assistants (ChatGPT, Claude, Google AI) can find, understand, and recommend the business by name.
 - Lead Follow-Up: A visual CRM pipeline that automatically follows up with every new lead on a fixed cadence until they respond.
 - Quote Follow-Up: Detects quotes sitting untouched and sends a personalized follow-up before the opportunity goes cold.
 - Customer Reactivation: Segments past customers automatically and runs a personalized outreach campaign to bring them back.
-- AI Ad Manager: Generates ad creative across platforms, sets targeting, launches campaigns, and reallocates budget toward whatever is converting.
+- Ads & AI Ad Manager: Runs paid ad campaigns that feed directly into the same automation systems, so every click is answered, qualified, and booked instead of going to voicemail. Generates ad creative, sets targeting, launches campaigns, and reallocates budget toward whatever is converting.
+- [AI SEO](https://nextgenclosersai.vercel.app/ai-seo): Structured data, FAQ content, and technical fundamentals built so AI assistants (ChatGPT, Claude, Google AI) can find, understand, and recommend the business by name.
 
 ## Industries
 
