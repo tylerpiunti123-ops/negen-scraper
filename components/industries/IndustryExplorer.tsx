@@ -12,8 +12,10 @@ import { cn } from "@/lib/utils";
 
 export function IndustryExplorer() {
   const [active, setActive] = useState<IndustryId>("home-services");
+  const [customIndustry, setCustomIndustry] = useState("");
   const pipeline = industryPipelines[active];
-  const activeLabel = industryOptions.find((i) => i.id === active)?.label ?? "";
+  const presetLabel = industryOptions.find((i) => i.id === active)?.label ?? "";
+  const activeLabel = active === "other" && customIndustry.trim() ? customIndustry.trim() : presetLabel;
 
   return (
     <section id="industries" className="border-b border-ink-800 py-24 sm:py-28">
@@ -40,6 +42,19 @@ export function IndustryExplorer() {
             </button>
           ))}
         </FadeIn>
+
+        {active === "other" && (
+          <FadeIn delay={0.05} className="mt-4">
+            <input
+              type="text"
+              value={customIndustry}
+              onChange={(e) => setCustomIndustry(e.target.value)}
+              placeholder="e.g. Pool Cleaning, Pest Control, Landscaping…"
+              aria-label="Your industry"
+              className="w-full max-w-sm rounded-lg border border-ink-600 bg-ink-950 px-3.5 py-2.5 text-sm text-paper-50 placeholder:text-mist-500 focus:border-accent focus:outline-none"
+            />
+          </FadeIn>
+        )}
 
         <div className="mt-8 overflow-hidden rounded-2xl border border-ink-700 bg-ink-900/40 p-6 sm:p-8">
           <AnimatePresence mode="wait">

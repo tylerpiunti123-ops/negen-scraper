@@ -23,7 +23,7 @@ export const industryOptions: IndustryOption[] = [
   { id: "legal", label: "Legal" },
   { id: "real-estate", label: "Real Estate" },
   { id: "professional-services", label: "Professional Services" },
-  { id: "other", label: "Other" },
+  { id: "other", label: "Other (type your own)" },
 ];
 
 export type BottleneckId =

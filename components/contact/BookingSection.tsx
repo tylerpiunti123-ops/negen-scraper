@@ -19,6 +19,7 @@ interface FormState {
   phone: string;
   website: string;
   industry: string;
+  industryOther: string;
   automate: string;
 }
 
@@ -29,6 +30,7 @@ const initialState: FormState = {
   phone: "",
   website: "",
   industry: "",
+  industryOther: "",
   automate: "",
 };
 
@@ -49,6 +51,9 @@ function validate(form: FormState): FieldErrors {
     errors.phone = "Enter a valid phone number.";
   }
   if (!form.industry) errors.industry = "Select an industry.";
+  if (form.industry === "Other" && !form.industryOther.trim()) {
+    errors.industryOther = "Tell us your industry.";
+  }
   if (!form.automate.trim()) errors.automate = "Tell us what you'd like to automate.";
   return errors;
 }
@@ -74,11 +79,16 @@ export function BookingSection() {
     setStatus("submitting");
     setServerError(null);
 
+    const payload = {
+      ...form,
+      industry: form.industry === "Other" ? form.industryOther.trim() : form.industry,
+    };
+
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -192,6 +202,23 @@ export function BookingSection() {
                     ))}
                   </select>
                   {errors.industry && <p className="mt-1 text-xs text-red-400">{errors.industry}</p>}
+                  {form.industry === "Other" && (
+                    <input
+                      type="text"
+                      value={form.industryOther}
+                      onChange={(e) => update("industryOther", e.target.value)}
+                      placeholder="Tell us your industry"
+                      aria-label="Your industry"
+                      aria-invalid={!!errors.industryOther}
+                      className={cn(
+                        "mt-2 w-full rounded-lg border bg-ink-950 px-3.5 py-2.5 text-sm text-paper-50 placeholder:text-mist-500 focus:outline-none",
+                        errors.industryOther ? "border-red-500/60" : "border-ink-600 focus:border-accent",
+                      )}
+                    />
+                  )}
+                  {errors.industryOther && (
+                    <p className="mt-1 text-xs text-red-400">{errors.industryOther}</p>
+                  )}
                 </div>
               </div>
 

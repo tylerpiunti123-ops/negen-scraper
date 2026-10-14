@@ -13,12 +13,17 @@ import { cn } from "@/lib/utils";
 
 export function AutomationBuilder() {
   const [industry, setIndustry] = useState<IndustryId | null>(null);
+  const [customIndustry, setCustomIndustry] = useState("");
   const [bottleneck, setBottleneck] = useState<BottleneckId | null>(null);
   const [result, setResult] = useState<ReturnType<typeof buildAutomationMap> | null>(null);
 
+  const needsCustomIndustry = industry === "other";
+  const canProceedPastIndustry = !!industry && (!needsCustomIndustry || customIndustry.trim().length > 0);
+
   function build() {
     if (!industry || !bottleneck) return;
-    setResult(buildAutomationMap(industry, bottleneck));
+    if (needsCustomIndustry && !customIndustry.trim()) return;
+    setResult(buildAutomationMap(industry, bottleneck, customIndustry));
   }
 
   function startOver() {
@@ -56,9 +61,22 @@ export function AutomationBuilder() {
                   </button>
                 ))}
               </div>
+              {needsCustomIndustry && (
+                <motion.input
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  type="text"
+                  value={customIndustry}
+                  onChange={(e) => setCustomIndustry(e.target.value)}
+                  placeholder="e.g. Pool Cleaning, Pest Control, Landscaping…"
+                  aria-label="Your industry"
+                  autoFocus
+                  className="mt-3 w-full max-w-sm rounded-lg border border-ink-600 bg-ink-950 px-3.5 py-2.5 text-sm text-paper-50 placeholder:text-mist-500 focus:border-accent focus:outline-none"
+                />
+              )}
             </div>
 
-            {industry && (
+            {canProceedPastIndustry && (
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
                 <p className="mb-3 font-mono text-xs uppercase tracking-widest text-mist-500">
                   2. What currently takes too much time?
@@ -82,7 +100,7 @@ export function AutomationBuilder() {
               </motion.div>
             )}
 
-            {industry && bottleneck && (
+            {canProceedPastIndustry && bottleneck && (
               <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
                 <Button onClick={build} icon={<Sparkles className="h-4 w-4" />} size="lg">
                   Build My Automation

@@ -47,8 +47,13 @@ export interface AutomationMapResult {
 export function buildAutomationMap(
   industry: IndustryId,
   bottleneck: BottleneckId,
+  customIndustryLabel?: string,
 ): AutomationMapResult {
-  const industryLabel = industryOptions.find((i) => i.id === industry)?.label ?? "Your Business";
+  const trimmedCustomLabel = customIndustryLabel?.trim();
+  const industryLabel =
+    industry === "other" && trimmedCustomLabel
+      ? trimmedCustomLabel
+      : industryOptions.find((i) => i.id === industry)?.label ?? "Your Business";
   const bottleneckLabel = bottleneckOptions.find((b) => b.id === bottleneck)?.label ?? "";
   const baseSteps = industryMaps[industry] ?? industryMaps.other;
   const appendNode = bottleneckAppendNode[bottleneck];
