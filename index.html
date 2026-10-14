@@ -759,6 +759,8 @@
             </button>
             <input type="file" id="fileInput" accept="image/*" multiple hidden>
             <div class="thumbs" id="thumbs"></div>
+            <p id="photoUploadNote" style="color:var(--mist-dim); font-size:13px; margin-top:10px; display:none;"></p>
+            <p id="photoError" style="color:var(--redlight); font-size:13px; margin-top:10px; display:none;">Please add at least one photo of your vehicle before continuing.</p>
             <div class="step-footer">
               <button type="button" class="back-link show" data-back="2">Back</button>
               <button type="button" class="btn btn-primary" data-next="2">Continue</button>
@@ -1258,6 +1260,10 @@
       var i = +btn.dataset.next;
       if (i === 0 && !vehicleType){ return; }
       if (i === 1 && needs.length === 0){ return; }
+      if (i === 2 && thumbs.children.length === 0){
+        document.getElementById('photoError').style.display = 'block';
+        return;
+      }
       stepIndex = i + 1; showStep(stepIndex, 1);
     });
   });
@@ -1272,17 +1278,32 @@
   var dropZone = document.getElementById('dropZone');
   var fileInput = document.getElementById('fileInput');
   var thumbs = document.getElementById('thumbs');
+  var photoUploadNote = document.getElementById('photoUploadNote');
   var dragSrc = null;
   dropZone.addEventListener('click', function(){ fileInput.click(); });
+  var MAX_PHOTOS = 5;
+  var MAX_PHOTO_MB = 8;
   fileInput.addEventListener('change', function(){
     Array.prototype.forEach.call(fileInput.files, function(file){
+      if (thumbs.children.length >= MAX_PHOTOS){
+        photoUploadNote.textContent = 'You can attach up to ' + MAX_PHOTOS + ' photos.';
+        photoUploadNote.style.display = 'block';
+        return;
+      }
+      if (file.size > MAX_PHOTO_MB * 1024 * 1024){
+        photoUploadNote.textContent = '"' + file.name + '" is too large (max ' + MAX_PHOTO_MB + 'MB per photo).';
+        photoUploadNote.style.display = 'block';
+        return;
+      }
       var url = URL.createObjectURL(file);
       var el = document.createElement('div');
+      el._file = file;
       el.className = 'thumb'; el.draggable = true;
       el.innerHTML = '<img src="'+url+'" alt="'+file.name+'">' +
         '<button type="button" class="rm">&times;</button>' +
         '<div class="bar"><i><b></b></i></div>';
       thumbs.appendChild(el);
+      document.getElementById('photoError').style.display = 'none';
       el.querySelector('.rm').addEventListener('click', function(){ el.remove(); });
       el.addEventListener('dragstart', function(){ dragSrc = el; });
       el.addEventListener('dragover', function(e){ e.preventDefault(); });
@@ -1342,6 +1363,11 @@
       err.style.display = 'block';
       return;
     }
+    if (thumbs.children.length === 0){
+      err.textContent = 'Please go back and add at least one photo of your vehicle.';
+      err.style.display = 'block';
+      return;
+    }
     err.style.display = 'none';
 
     var photoCount = thumbs.children.length;
@@ -1357,7 +1383,7 @@
       'Needs: ' + (needs.length ? needs.map(function(k){ return NEED_LABELS[k] || k; }).join(', ') : 'Not specified') + (hasClothSeats ? ' — has cloth seats' : ''),
       (needs.indexOf('ceramic') > -1 ? 'Ceramic coated items: ' + (ceramicItems.length ? ceramicItems.map(function(k){ return CERAMIC_ITEM_LABELS[k] || k; }).join(', ') : 'Not specified') + (ceramicInteriorType ? ' (' + (CERAMIC_INTERIOR_LABELS[ceramicInteriorType] || ceramicInteriorType) + ')' : '') : null),
       (needs.indexOf('ceramic') > -1 ? 'Ceramic process: ' + (ceramicProcess ? (PROCESS_LABELS[ceramicProcess] || ceramicProcess) : 'Not specified') : null),
-      'Photos attached in-app: ' + photoCount + (photoCount ? ' (ask the customer to text or re-send these — email links can’t carry the files)' : ''),
+      'Photos attached: ' + photoCount,
       '',
       'Notes: ' + (notes || '—')
     ];
@@ -1367,17 +1393,21 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
+    var formData = new FormData();
+    formData.append('access_key', WEB3FORMS_KEY);
+    formData.append('subject', subject);
+    formData.append('from_name', name);
+    formData.append('email', email);
+    formData.append('replyto', email);
+    formData.append('message', message);
+    Array.prototype.forEach.call(thumbs.children, function(el){
+      if (el._file) formData.append('attachment', el._file);
+    });
+
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: subject,
-        from_name: name,
-        email: email,
-        replyto: email,
-        message: message
-      })
+      headers: { 'Accept': 'application/json' },
+      body: formData
     }).then(function(res){ return res.json(); }).then(function(data){
       if (data && data.success){
         showStep('thanks', 1);
