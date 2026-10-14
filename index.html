@@ -1383,7 +1383,7 @@
       'Needs: ' + (needs.length ? needs.map(function(k){ return NEED_LABELS[k] || k; }).join(', ') : 'Not specified') + (hasClothSeats ? ' — has cloth seats' : ''),
       (needs.indexOf('ceramic') > -1 ? 'Ceramic coated items: ' + (ceramicItems.length ? ceramicItems.map(function(k){ return CERAMIC_ITEM_LABELS[k] || k; }).join(', ') : 'Not specified') + (ceramicInteriorType ? ' (' + (CERAMIC_INTERIOR_LABELS[ceramicInteriorType] || ceramicInteriorType) + ')' : '') : null),
       (needs.indexOf('ceramic') > -1 ? 'Ceramic process: ' + (ceramicProcess ? (PROCESS_LABELS[ceramicProcess] || ceramicProcess) : 'Not specified') : null),
-      'Photos attached: ' + photoCount,
+      'Photos: customer has ' + photoCount + ' ready — ask them to text these to 540-878-8636 if they didn’t come through as attachments.',
       '',
       'Notes: ' + (notes || '—')
     ];
@@ -1393,21 +1393,17 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
-    var formData = new FormData();
-    formData.append('access_key', WEB3FORMS_KEY);
-    formData.append('subject', subject);
-    formData.append('from_name', name);
-    formData.append('email', email);
-    formData.append('replyto', email);
-    formData.append('message', message);
-    Array.prototype.forEach.call(thumbs.children, function(el){
-      if (el._file) formData.append('attachment', el._file);
-    });
-
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: formData
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: subject,
+        from_name: name,
+        email: email,
+        replyto: email,
+        message: message
+      })
     }).then(function(res){ return res.json(); }).then(function(data){
       if (data && data.success){
         showStep('thanks', 1);
