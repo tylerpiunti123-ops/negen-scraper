@@ -11,6 +11,8 @@ import { MissedCallRecoveryDemo } from "@/components/demos/MissedCallRecoveryDem
 import { LeadFollowUpDemo } from "@/components/demos/LeadFollowUpDemo";
 import { QuoteFollowUpDemo } from "@/components/demos/QuoteFollowUpDemo";
 import { CustomerReactivationDemo } from "@/components/demos/CustomerReactivationDemo";
+import { AiSeoDemo } from "@/components/demos/AiSeoDemo";
+import { AiAdsDemo } from "@/components/demos/AiAdsDemo";
 
 export function DemoGrid() {
   const [activeDemo, setActiveDemo] = useState<DemoId | null>(null);
@@ -38,6 +40,8 @@ export function DemoGrid() {
         eyebrow={activeMeta ? `Demo ${activeMeta.index} — ${activeMeta.tagline}` : undefined}
         className="h-[85vh] sm:h-[640px]"
       >
+        {activeDemo === "ai-seo" && <AiSeoDemo />}
+        {activeDemo === "ai-ads" && <AiAdsDemo />}
         {activeDemo === "receptionist" && <AIReceptionistDemo onComplete={() => undefined} />}
         {activeDemo === "missed-call" && <MissedCallRecoveryDemo />}
         {activeDemo === "lead-followup" && <LeadFollowUpDemo />}

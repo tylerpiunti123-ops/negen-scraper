@@ -1,7 +1,9 @@
 import type { LucideIcon } from "lucide-react";
-import { Headset, PhoneMissed, ListChecks, FileText, Users } from "lucide-react";
+import { Radar, Megaphone, Headset, PhoneMissed, ListChecks, FileText, Users } from "lucide-react";
 
 export type DemoId =
+  | "ai-seo"
+  | "ai-ads"
   | "receptionist"
   | "missed-call"
   | "lead-followup"
@@ -19,8 +21,26 @@ export interface DemoMeta {
 
 export const demos: DemoMeta[] = [
   {
-    id: "receptionist",
+    id: "ai-seo",
     index: "01",
+    title: "AI SEO",
+    tagline: "Shows up when customers ask AI for help",
+    description:
+      "When someone asks ChatGPT, Claude, or Google AI what to do in an emergency, a properly optimized business gets recommended by name. See it happen live.",
+    icon: Radar,
+  },
+  {
+    id: "ai-ads",
+    index: "02",
+    title: "AI Ad Manager",
+    tagline: "Writes, launches, and optimizes ad campaigns",
+    description:
+      "The system generates ad creative for multiple platforms, sets targeting, launches the campaign, and reallocates budget toward whatever is actually converting.",
+    icon: Megaphone,
+  },
+  {
+    id: "receptionist",
+    index: "03",
     title: "AI Receptionist",
     tagline: "Answers every inquiry, instantly",
     description:
@@ -29,7 +49,7 @@ export const demos: DemoMeta[] = [
   },
   {
     id: "missed-call",
-    index: "02",
+    index: "04",
     title: "Missed Call Recovery",
     tagline: "Turns missed calls into booked jobs",
     description:
@@ -38,7 +58,7 @@ export const demos: DemoMeta[] = [
   },
   {
     id: "lead-followup",
-    index: "03",
+    index: "05",
     title: "Lead Follow-Up",
     tagline: "Nobody goes cold in your pipeline",
     description:
@@ -47,7 +67,7 @@ export const demos: DemoMeta[] = [
   },
   {
     id: "quote-followup",
-    index: "04",
+    index: "06",
     title: "Quote Follow-Up",
     tagline: "Stale quotes get chased automatically",
     description:
@@ -56,7 +76,7 @@ export const demos: DemoMeta[] = [
   },
   {
     id: "reactivation",
-    index: "05",
+    index: "07",
     title: "Customer Reactivation",
     tagline: "Turns your old customer list into revenue",
     description:
