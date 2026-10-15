@@ -53,7 +53,7 @@ export function CalendlyEmbed({ className }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      className={cn("min-h-[700px] w-full", className)}
+      className={cn("h-[1150px] w-full sm:h-[980px]", className)}
       aria-label="Calendly scheduling widget"
     />
   );
