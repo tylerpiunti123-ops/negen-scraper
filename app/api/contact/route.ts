@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import { CONTACT_NOTIFICATION_EMAIL } from "@/lib/constants";
+import { upsertContactFormLead, isDbConfigured } from "@/lib/db";
+import { sendEmail, escapeHtml } from "@/lib/email";
+
+export const dynamic = "force-dynamic";
 
 interface ContactPayload {
   name?: string;
@@ -23,21 +27,7 @@ interface ValidatedContact {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
 async function sendNotificationEmail(payload: ValidatedContact) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn("RESEND_API_KEY not set — skipping email notification.");
-    return;
-  }
-
   const rows: [string, string][] = [
     ["Name", payload.name],
     ["Business", payload.business],
@@ -60,25 +50,12 @@ async function sendNotificationEmail(payload: ValidatedContact) {
     </table>
   `;
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: "NextGen Closers AI <onboarding@resend.dev>",
-      to: [CONTACT_NOTIFICATION_EMAIL],
-      reply_to: payload.email,
-      subject: `New strategy call request — ${payload.business}`,
-      html,
-    }),
+  await sendEmail({
+    to: CONTACT_NOTIFICATION_EMAIL,
+    replyTo: payload.email,
+    subject: `New strategy call request — ${payload.business}`,
+    html,
   });
-
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    console.error("Failed to send notification email:", res.status, text);
-  }
 }
 
 export async function POST(request: Request) {
@@ -116,6 +93,19 @@ export async function POST(request: Request) {
     await sendNotificationEmail(validated);
   } catch (err) {
     console.error("Error sending notification email:", err);
+  }
+
+  if (isDbConfigured()) {
+    try {
+      await upsertContactFormLead({
+        name: validated.name,
+        email: validated.email,
+        phone: validated.phone,
+        business: validated.business,
+      });
+    } catch (err) {
+      console.error("Error saving lead to database:", err);
+    }
   }
 
   return NextResponse.json({ ok: true });
