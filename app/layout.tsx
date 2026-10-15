@@ -66,6 +66,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: "3EK2m9ggB6a8onae6GZr4XF3rQT378cbC2w5PwoG1AY",
+    other: {
+      "msvalidate.01": "EA717E5B3254B20F0E48AE64A4F6E7E8",
+    },
+  },
 };
 
 const structuredData = {
