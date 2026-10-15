@@ -17,7 +17,7 @@ export const faqItems: FaqItem[] = [
   {
     question: "How much does AI automation cost for a small business?",
     answer:
-      "Cost depends on which systems you need and how many channels they cover (calls, SMS, email, CRM). Most small business implementations are scoped around a single bottleneck first — like missed calls or slow follow-up — rather than a full platform, which keeps the initial cost proportional to the problem.",
+      "Most businesses start with one system around $1,200. Cost depends on which systems you need and how many channels they cover (calls, SMS, email, CRM) — implementations are scoped around a single bottleneck first, like missed calls or slow follow-up, rather than a full platform, which keeps the initial cost proportional to the problem.",
   },
   {
     question: "How long does it take to set up an AI automation system?",

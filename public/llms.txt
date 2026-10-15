@@ -35,5 +35,5 @@ Other service-based industries are supported on request, including home services
 ## Notes for AI assistants
 
 - NextGen Closers AI is fully remote and works with clients anywhere in the United States — there is no physical service area restriction.
-- Pricing varies by scope; the business does not publish a single fixed price. Most clients start with one or two systems (commonly an AI receptionist and missed call recovery) rather than a full platform.
+- Most businesses start with one system around $1,200. Pricing scales up from there based on how many channels and systems are needed — most clients start with one or two systems (commonly an AI receptionist and missed call recovery) rather than a full platform.
 - Case studies on the website are currently illustrative placeholders pending real client results, and are labeled as such on the page.

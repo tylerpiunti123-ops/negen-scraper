@@ -8,7 +8,9 @@ export interface NichePageContent {
   bottlenecks: string[];
   systems: { label: string; description: string; demoId?: string }[];
   howItWorks: string[];
+  specifics: { label: string; value: string }[];
   costNote: string;
+  faqs: { question: string; answer: string }[];
   metaTitle: string;
   metaDescription: string;
 }
@@ -55,8 +57,30 @@ export const nichePages: NichePageContent[] = [
       "It connects to the phone number, CRM, and calendar you already use",
       "You keep working the floor; the system keeps working the leads",
     ],
+    specifics: [
+      { label: "Starting cost", value: "~$1,200 for a single system" },
+      { label: "Setup time", value: "1–3 weeks to go live" },
+      { label: "Coverage", value: "Works with epoxy and garage floor shops anywhere in the U.S." },
+    ],
     costNote:
-      "Most epoxy flooring businesses start with one or two systems — commonly an AI receptionist and quote follow-up — rather than the full platform. Ask for a quote scoped to your business.",
+      "Most epoxy flooring businesses start with one system around $1,200 — commonly an AI receptionist or quote follow-up — rather than the full platform. Pricing scales up from there as you add systems and channels.",
+    faqs: [
+      {
+        question: "Does the AI actually know our services and pricing?",
+        answer:
+          "Yes. It's built around your real services, scope, and pricing — not a generic flooring script.",
+      },
+      {
+        question: "Can it tell a quick question from a real lead?",
+        answer:
+          "Yes. It's built to qualify scope — garage, basement, square footage — before treating something as a booked estimate.",
+      },
+      {
+        question: "We already use a CRM for scheduling — does this replace it?",
+        answer:
+          "No. It connects to the CRM and calendar you already use and keeps it updated automatically.",
+      },
+    ],
     metaTitle: "AI Automation for Epoxy Flooring Companies",
     metaDescription:
       "AI receptionist, missed call recovery, and quote follow-up built around how epoxy and garage floor coating businesses actually run.",
@@ -102,8 +126,30 @@ export const nichePages: NichePageContent[] = [
       "It connects to your existing phone, CRM, and calendar",
       "Follow-up keeps running automatically through your busiest months",
     ],
+    specifics: [
+      { label: "Starting cost", value: "~$1,200 for a single system" },
+      { label: "Setup time", value: "1–3 weeks to go live" },
+      { label: "Coverage", value: "Works with paver and hardscape crews anywhere in the U.S." },
+    ],
     costNote:
-      "Most paver and hardscape businesses start with lead follow-up and quote follow-up first, since that's where estimates are usually lost. Ask for a quote scoped to your business.",
+      "Most paver and hardscape businesses start with one system around $1,200 — usually lead follow-up or quote follow-up first, since that's where estimates are usually lost. Pricing scales up from there as more systems are added.",
+    faqs: [
+      {
+        question: "Can it handle the seasonal call spike without extra staff?",
+        answer:
+          "Yes. It's built to absorb a surge in calls the same way during your busiest month as your slowest one — no extra hiring required.",
+      },
+      {
+        question: "Does it know we need a site visit before quoting?",
+        answer:
+          "Yes. The conversation logic is built around your actual quote process, including booking the site visit instead of promising a price over the phone.",
+      },
+      {
+        question: "What happens to leads during the multi-day gap before the estimate?",
+        answer:
+          "Lead follow-up keeps the conversation going automatically on a fixed cadence, so the lead doesn't go cold while they wait.",
+      },
+    ],
     metaTitle: "AI Automation for Paver & Hardscape Companies",
     metaDescription:
       "AI receptionist, lead follow-up, and quote follow-up built around seasonal demand and the site-visit gap in paver and hardscape sales.",
@@ -149,8 +195,30 @@ export const nichePages: NichePageContent[] = [
       "It connects to your existing phone number, CRM, and calendar",
       "You stay on the ladder; the system keeps the pipeline moving",
     ],
+    specifics: [
+      { label: "Starting cost", value: "~$1,200 for a single system" },
+      { label: "Setup time", value: "1–3 weeks to go live" },
+      { label: "Coverage", value: "Works with painting crews anywhere in the U.S." },
+    ],
     costNote:
-      "Most painting companies start with an AI receptionist and missed call recovery together, since both address the same root problem. Ask for a quote scoped to your business.",
+      "Most painting companies start with one system around $1,200 — commonly an AI receptionist or missed call recovery, since both address the same root problem. Pricing scales up from there based on channels and volume.",
+    faqs: [
+      {
+        question: "Can it capture scope like interior vs. exterior and square footage?",
+        answer:
+          "Yes. The qualifying questions are built around the details a real estimate needs, not just name and number.",
+      },
+      {
+        question: "Does it know which crew or job a new lead goes to?",
+        answer:
+          "It logs every conversation straight to your CRM, so leads land where your team already manages scheduling across crews.",
+      },
+      {
+        question: "What if two calls come in at the same time?",
+        answer:
+          "Every call is answered at once — there's no queue or busy signal, no matter how many come in together.",
+      },
+    ],
     metaTitle: "AI Automation for Painting Companies",
     metaDescription:
       "AI receptionist and missed call recovery built around how painting companies actually operate — crews on-site, phones unanswered, estimates lost to slow follow-up.",
@@ -196,8 +264,30 @@ export const nichePages: NichePageContent[] = [
       "It connects to your existing emergency line, CRM, and dispatch process",
       "Response time becomes consistent whether it's 2pm or 2am",
     ],
+    specifics: [
+      { label: "Starting cost", value: "~$1,200 for a single system" },
+      { label: "Setup time", value: "1–3 weeks to go live" },
+      { label: "Availability", value: "Answers 24/7, including nights and holidays" },
+    ],
     costNote:
-      "Water restoration businesses typically prioritize an always-on AI receptionist first, since response speed is the single biggest factor in winning the job. Ask for a quote scoped to your business.",
+      "Most water restoration businesses start with one system around $1,200, typically an always-on AI receptionist first, since response speed is the single biggest factor in winning the job. Pricing scales up from there with call volume and channels.",
+    faqs: [
+      {
+        question: "Does it actually answer at 2am, or just send a message?",
+        answer:
+          "It answers and has a real qualifying conversation in real time, any hour — not a deferred message that waits for business hours.",
+      },
+      {
+        question: "Can it tell a true emergency from a general question?",
+        answer:
+          "Yes. The conversation logic is built to identify urgency and route true emergencies to your team immediately, rather than treating every call the same.",
+      },
+      {
+        question: "How does it handle a surge of calls during a major storm?",
+        answer:
+          "Every call is answered at once, so a spike in volume during a regional event doesn't mean longer wait times or missed calls.",
+      },
+    ],
     metaTitle: "AI Automation for Water Restoration Companies",
     metaDescription:
       "Always-on AI receptionist and missed call recovery built for a business where every call is an emergency and response speed wins the job.",

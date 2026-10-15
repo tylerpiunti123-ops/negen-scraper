@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, Info, PhoneCall } from "lucide-react";
+import { AlertTriangle, ArrowRight, Info, PhoneCall, Plus } from "lucide-react";
 import type { NichePageContent } from "@/data/nichePages";
 import { Navbar } from "@/components/nav/Navbar";
 import { Footer } from "@/components/footer/Footer";
@@ -28,11 +28,28 @@ export function NichePageTemplate({ content }: { content: NichePageContent }) {
     },
   };
 
+  const faqStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: content.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }}
       />
       <Navbar />
       <main className="pt-32 sm:pt-40">
@@ -55,6 +72,15 @@ export function NichePageTemplate({ content }: { content: NichePageContent }) {
                 <Button href="/#contact" variant="secondary" size="lg" icon={<PhoneCall className="h-4 w-4" />}>
                   Book A Strategy Call
                 </Button>
+              </div>
+
+              <div className="mt-10 grid gap-3 sm:grid-cols-3">
+                {content.specifics.map((item) => (
+                  <div key={item.label} className="rounded-lg border border-ink-700 bg-ink-900/40 p-4">
+                    <p className="text-[11px] uppercase tracking-wider text-mist-500">{item.label}</p>
+                    <p className="mt-1.5 text-sm font-medium leading-relaxed text-paper-50">{item.value}</p>
+                  </div>
+                ))}
               </div>
             </FadeIn>
           </Container>
@@ -132,6 +158,27 @@ export function NichePageTemplate({ content }: { content: NichePageContent }) {
               <div className="mt-4 flex items-start gap-3 rounded-lg border border-ink-700 bg-ink-900/40 p-4">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-mist-500" />
                 <p className="text-sm leading-relaxed text-mist-400">{content.costNote}</p>
+              </div>
+            </FadeIn>
+          </Container>
+        </section>
+
+        <section className="border-b border-ink-800 py-16 sm:py-20">
+          <Container className="max-w-3xl">
+            <FadeIn>
+              <h2 className="text-2xl font-semibold text-paper-50">
+                Questions from {content.niche.toLowerCase()} businesses
+              </h2>
+              <div className="mt-6 space-y-4">
+                {content.faqs.map((faq) => (
+                  <div key={faq.question} className="rounded-lg border border-ink-700 bg-ink-900/40 p-5">
+                    <div className="flex items-start gap-3">
+                      <Plus className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                      <p className="text-base font-semibold text-paper-50">{faq.question}</p>
+                    </div>
+                    <p className="mt-2 pl-7 text-sm leading-relaxed text-mist-400">{faq.answer}</p>
+                  </div>
+                ))}
               </div>
             </FadeIn>
           </Container>
