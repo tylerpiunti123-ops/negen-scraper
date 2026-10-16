@@ -38,13 +38,13 @@ export function ROICalculator() {
           description={mode.description}
         />
 
-        <div className="mt-8 inline-flex rounded-full border border-ink-700 bg-ink-900/60 p-1">
+        <div className="mt-8 inline-flex flex-wrap gap-1 rounded-2xl border border-ink-700 bg-ink-900/60 p-1 sm:rounded-full">
           {calculatorModes.map((m) => (
             <button
               key={m.id}
               onClick={() => selectMode(m.id)}
               className={cn(
-                "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                "whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
                 m.id === mode.id
                   ? "bg-accent text-ink-950"
                   : "text-mist-400 hover:text-paper-50",

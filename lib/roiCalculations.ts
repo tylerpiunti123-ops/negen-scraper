@@ -43,6 +43,10 @@ const MISSED_CALL_LOSS_RATE = 0.62;
 const RECEPTIONIST_RECOVERY_RATE = 0.35;
 const TIME_SAVED_RATE = 0.55;
 const SEO_RECOVERY_RATE = 0.45;
+const MISSED_CALL_RECOVERY_TEXT_BACK_RATE = 0.4;
+const AD_LEAD_RECOVERY_RATE = 0.5;
+const WEBSITE_TARGET_CONVERSION_RATE = 0.05;
+const WEBSITE_RECOVERY_RATE = 0.6;
 
 const receptionistMode: CalculatorMode = {
   id: "receptionist",
@@ -171,4 +175,167 @@ const aiSeoMode: CalculatorMode = {
   ],
 };
 
-export const calculatorModes: CalculatorMode[] = [receptionistMode, aiSeoMode];
+const missedCallRecoveryMode: CalculatorMode = {
+  id: "missed-call-recovery",
+  tabLabel: "Missed Call Recovery",
+  description:
+    "Adjust the numbers to reflect your business and see the estimated opportunity in missed calls that go cold instead of getting a text back.",
+  heroLabel: "Estimated Opportunity You're Currently Missing",
+  heroValueKey: "missedValue",
+  heroSub: (r) =>
+    `≈ ${formatCurrency(v(r, "missedValue") * 12)} per year at your current numbers — based on ${formatNumber(v(r, "missedOpportunities"))} missed calls going cold/mo.`,
+  fields: [
+    { key: "avgCustomerValue", label: "Average Customer Value", min: 100, max: 20000, step: 100, prefix: "$" },
+    { key: "closeRate", label: "Current Close Rate", min: 5, max: 90, step: 1, suffix: "%" },
+    { key: "missedCalls", label: "Missed Calls (per month)", min: 0, max: 150, step: 1 },
+  ],
+  defaults: {
+    avgCustomerValue: 1800,
+    closeRate: 35,
+    missedCalls: 25,
+  },
+  calculate: (inputs) => {
+    const closeRateFraction = clampPercent(v(inputs, "closeRate"));
+    const avgCustomerValue = v(inputs, "avgCustomerValue");
+
+    const missedOpportunities = v(inputs, "missedCalls") * MISSED_CALL_LOSS_RATE;
+    const missedValue = missedOpportunities * avgCustomerValue * closeRateFraction;
+
+    const recoveredOpportunities = missedOpportunities * MISSED_CALL_RECOVERY_TEXT_BACK_RATE;
+    const recoveredValue = recoveredOpportunities * avgCustomerValue * closeRateFraction;
+
+    return { missedOpportunities, missedValue, recoveredOpportunities, recoveredValue };
+  },
+  resultCards: [
+    {
+      key: "missedOpportunities",
+      label: "Missed Calls Going Cold",
+      suffix: "/mo",
+      sub: (r) => `≈ ${formatCurrency(v(r, "missedValue"))} in estimated opportunity`,
+    },
+    {
+      key: "recoveredOpportunities",
+      label: "Potential Recovered Leads",
+      suffix: "/mo",
+      sub: (r) => `≈ ${formatCurrency(v(r, "recoveredValue"))} in estimated opportunity`,
+      accent: true,
+    },
+  ],
+};
+
+const adsMode: CalculatorMode = {
+  id: "ads",
+  tabLabel: "Ads",
+  description:
+    "Adjust the numbers to reflect your ad spend and see how much is going to waste on leads that never get a timely response.",
+  heroLabel: "Estimated Ad Spend Going To Waste",
+  heroValueKey: "wastedAdSpend",
+  heroSub: (r) =>
+    `≈ ${formatCurrency(v(r, "wastedAdSpend") * 12)} per year at your current numbers — based on ${formatNumber(v(r, "leadsWasted"))} ad leads going unanswered/mo.`,
+  fields: [
+    { key: "monthlyAdSpend", label: "Monthly Ad Spend", min: 500, max: 20000, step: 100, prefix: "$" },
+    { key: "monthlyAdLeads", label: "Monthly Leads From Ads", min: 10, max: 300, step: 5 },
+    { key: "avgCustomerValue", label: "Average Customer Value", min: 100, max: 20000, step: 100, prefix: "$" },
+    { key: "closeRate", label: "Current Close Rate", min: 5, max: 90, step: 1, suffix: "%" },
+    { key: "unansweredRate", label: "Leads That Go Unanswered", min: 0, max: 80, step: 5, suffix: "%" },
+  ],
+  defaults: {
+    monthlyAdSpend: 4000,
+    monthlyAdLeads: 80,
+    avgCustomerValue: 1800,
+    closeRate: 35,
+    unansweredRate: 30,
+  },
+  calculate: (inputs) => {
+    const closeRateFraction = clampPercent(v(inputs, "closeRate"));
+    const avgCustomerValue = v(inputs, "avgCustomerValue");
+    const monthlyAdLeads = v(inputs, "monthlyAdLeads");
+    const monthlyAdSpend = v(inputs, "monthlyAdSpend");
+
+    const costPerLead = monthlyAdLeads > 0 ? monthlyAdSpend / monthlyAdLeads : 0;
+    const leadsWasted = monthlyAdLeads * clampPercent(v(inputs, "unansweredRate"));
+    const wastedAdSpend = leadsWasted * costPerLead;
+    const missedValue = leadsWasted * avgCustomerValue * closeRateFraction;
+
+    const recoveredLeads = leadsWasted * AD_LEAD_RECOVERY_RATE;
+    const recoveredValue = recoveredLeads * avgCustomerValue * closeRateFraction;
+
+    return { leadsWasted, wastedAdSpend, missedValue, recoveredLeads, recoveredValue };
+  },
+  resultCards: [
+    {
+      key: "leadsWasted",
+      label: "Leads Going Unanswered",
+      suffix: "/mo",
+      sub: (r) => `≈ ${formatCurrency(v(r, "missedValue"))} in estimated opportunity`,
+    },
+    {
+      key: "recoveredLeads",
+      label: "Potential Recovered Leads",
+      suffix: "/mo",
+      sub: (r) => `≈ ${formatCurrency(v(r, "recoveredValue"))} in estimated opportunity`,
+      accent: true,
+    },
+  ],
+};
+
+const websitesMode: CalculatorMode = {
+  id: "websites",
+  tabLabel: "Websites",
+  description:
+    "Adjust the numbers to reflect your search volume and see how many leads a stronger site and Google profile could be converting.",
+  heroLabel: "Estimated Opportunity You're Currently Missing",
+  heroValueKey: "missedValue",
+  heroSub: (r) =>
+    `≈ ${formatCurrency(v(r, "missedValue") * 12)} per year at your current numbers — based on ${formatNumber(v(r, "gapLeads"))} leads/mo your site isn't converting.`,
+  fields: [
+    { key: "monthlySearches", label: "Monthly Searches For Your Service", min: 50, max: 5000, step: 50 },
+    { key: "siteConversionRate", label: "Current Site Conversion Rate", min: 0, max: 20, step: 1, suffix: "%" },
+    { key: "avgCustomerValue", label: "Average Customer Value", min: 100, max: 20000, step: 100, prefix: "$" },
+    { key: "closeRate", label: "Current Close Rate", min: 5, max: 90, step: 1, suffix: "%" },
+  ],
+  defaults: {
+    monthlySearches: 400,
+    siteConversionRate: 2,
+    avgCustomerValue: 1800,
+    closeRate: 35,
+  },
+  calculate: (inputs) => {
+    const closeRateFraction = clampPercent(v(inputs, "closeRate"));
+    const avgCustomerValue = v(inputs, "avgCustomerValue");
+    const monthlySearches = v(inputs, "monthlySearches");
+
+    const currentLeads = monthlySearches * clampPercent(v(inputs, "siteConversionRate"));
+    const potentialLeads = monthlySearches * WEBSITE_TARGET_CONVERSION_RATE;
+    const gapLeads = Math.max(potentialLeads - currentLeads, 0);
+    const missedValue = gapLeads * avgCustomerValue * closeRateFraction;
+
+    const recoveredLeads = gapLeads * WEBSITE_RECOVERY_RATE;
+    const recoveredValue = recoveredLeads * avgCustomerValue * closeRateFraction;
+
+    return { gapLeads, missedValue, recoveredLeads, recoveredValue };
+  },
+  resultCards: [
+    {
+      key: "gapLeads",
+      label: "Leads Your Site Isn't Converting",
+      suffix: "/mo",
+      sub: (r) => `≈ ${formatCurrency(v(r, "missedValue"))} in estimated opportunity`,
+    },
+    {
+      key: "recoveredLeads",
+      label: "Potential Recovered Leads",
+      suffix: "/mo",
+      sub: (r) => `≈ ${formatCurrency(v(r, "recoveredValue"))} in estimated opportunity`,
+      accent: true,
+    },
+  ],
+};
+
+export const calculatorModes: CalculatorMode[] = [
+  receptionistMode,
+  missedCallRecoveryMode,
+  aiSeoMode,
+  adsMode,
+  websitesMode,
+];
