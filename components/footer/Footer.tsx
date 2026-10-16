@@ -83,7 +83,12 @@ export function Footer() {
 
         <div className="flex flex-col gap-3 border-t border-ink-800 pt-6 text-xs text-mist-500 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} NextGen Closers AI. All rights reserved.</p>
-          <p>Demo data shown throughout this site is illustrative and not real client data.</p>
+          <div className="flex items-center gap-4">
+            <p>Demo data shown throughout this site is illustrative and not real client data.</p>
+            <a href="/admin" className="shrink-0 text-mist-600 hover:text-mist-400">
+              Admin
+            </a>
+          </div>
         </div>
       </Container>
     </footer>
