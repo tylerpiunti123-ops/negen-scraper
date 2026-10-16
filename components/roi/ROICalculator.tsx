@@ -2,37 +2,30 @@
 
 import { useMemo, useState } from "react";
 import { Info } from "lucide-react";
-import { calculateROI, defaultROIInputs, type ROIInputs } from "@/lib/roiCalculations";
-import { formatCurrency, formatNumber } from "@/lib/utils";
+import { calculatorModes } from "@/lib/roiCalculations";
+import { formatCurrency, formatNumber, cn } from "@/lib/utils";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 
-interface FieldConfig {
-  key: keyof ROIInputs;
-  label: string;
-  min: number;
-  max: number;
-  step: number;
-  prefix?: string;
-  suffix?: string;
-}
-
-const fields: FieldConfig[] = [
-  { key: "monthlyLeads", label: "Monthly Leads", min: 10, max: 500, step: 5 },
-  { key: "avgCustomerValue", label: "Average Customer Value", min: 100, max: 20000, step: 100, prefix: "$" },
-  { key: "closeRate", label: "Current Close Rate", min: 5, max: 90, step: 1, suffix: "%" },
-  { key: "missedCalls", label: "Missed Calls (per month)", min: 0, max: 150, step: 1 },
-  { key: "avgFollowUpMinutes", label: "Avg. Follow-Up Time Per Lead", min: 1, max: 120, step: 1, suffix: " min" },
-  { key: "employeesHandlingLeads", label: "Employees Handling Leads", min: 1, max: 20, step: 1 },
-];
-
 export function ROICalculator() {
-  const [inputs, setInputs] = useState<ROIInputs>(defaultROIInputs);
-  const results = useMemo(() => calculateROI(inputs), [inputs]);
+  const [modeId, setModeId] = useState(calculatorModes[0]!.id);
+  const mode = useMemo(
+    () => calculatorModes.find((m) => m.id === modeId) ?? calculatorModes[0]!,
+    [modeId],
+  );
+  const [inputs, setInputs] = useState<Record<string, number>>(mode.defaults);
+  const results = useMemo(() => mode.calculate(inputs), [mode, inputs]);
 
-  function updateField(key: keyof ROIInputs, value: number) {
+  function selectMode(id: string) {
+    const next = calculatorModes.find((m) => m.id === id);
+    if (!next) return;
+    setModeId(id);
+    setInputs(next.defaults);
+  }
+
+  function updateField(key: string, value: number) {
     setInputs((prev) => ({ ...prev, [key]: value }));
   }
 
@@ -42,12 +35,29 @@ export function ROICalculator() {
         <SectionHeading
           eyebrow="ROI Calculator"
           title="What could this be worth to you?"
-          description="Adjust the numbers to reflect your business and see the estimated opportunity in missed leads and manual hours."
+          description={mode.description}
         />
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1fr,1fr]">
-          <FadeIn className="space-y-6 rounded-2xl border border-ink-700 bg-ink-900/40 p-6">
-            {fields.map((field) => (
+        <div className="mt-8 inline-flex rounded-full border border-ink-700 bg-ink-900/60 p-1">
+          {calculatorModes.map((m) => (
+            <button
+              key={m.id}
+              onClick={() => selectMode(m.id)}
+              className={cn(
+                "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
+                m.id === mode.id
+                  ? "bg-accent text-ink-950"
+                  : "text-mist-400 hover:text-paper-50",
+              )}
+            >
+              {m.tabLabel}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1fr,1fr]">
+          <FadeIn key={`${mode.id}-fields`} className="space-y-6 rounded-2xl border border-ink-700 bg-ink-900/40 p-6">
+            {mode.fields.map((field) => (
               <div key={field.key}>
                 <div className="mb-2 flex items-center justify-between">
                   <label htmlFor={field.key} className="text-sm text-mist-400">
@@ -55,7 +65,7 @@ export function ROICalculator() {
                   </label>
                   <span className="font-mono text-sm text-paper-50">
                     {field.prefix ?? ""}
-                    {formatNumber(inputs[field.key])}
+                    {formatNumber(inputs[field.key] ?? 0)}
                     {field.suffix ?? ""}
                   </span>
                 </div>
@@ -65,7 +75,7 @@ export function ROICalculator() {
                   min={field.min}
                   max={field.max}
                   step={field.step}
-                  value={inputs[field.key]}
+                  value={inputs[field.key] ?? 0}
                   onChange={(e) => updateField(field.key, Number(e.target.value))}
                   className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-ink-700 accent-accent"
                 />
@@ -73,45 +83,30 @@ export function ROICalculator() {
             ))}
           </FadeIn>
 
-          <FadeIn delay={0.1} className="flex flex-col gap-4">
+          <FadeIn key={`${mode.id}-results`} delay={0.1} className="flex flex-col gap-4">
             <div className="rounded-2xl border border-accent/30 bg-accent/[0.06] p-6">
               <p className="font-mono text-xs uppercase tracking-widest text-accent">
-                Estimated Opportunity You&apos;re Currently Missing
+                {mode.heroLabel}
               </p>
               <p className="mt-2 flex items-baseline gap-2 text-4xl font-semibold text-paper-50 sm:text-5xl">
-                <AnimatedCounter value={results.estimatedMissedValue} format={formatCurrency} />
+                <AnimatedCounter value={results[mode.heroValueKey] ?? 0} format={formatCurrency} />
                 <span className="text-base font-normal text-mist-400">/ month</span>
               </p>
-              <p className="mt-2 text-sm text-mist-400">
-                ≈ {formatCurrency(results.estimatedMissedValue * 12)} per year at your current
-                numbers — based on {formatNumber(results.estimatedMissedOpportunities)} missed
-                opportunities/mo.
-              </p>
+              <p className="mt-2 text-sm text-mist-400">{mode.heroSub(results)}</p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <ResultCard
-                label="Estimated Missed Opportunities"
-                value={<AnimatedCounter value={results.estimatedMissedOpportunities} suffix="/mo" />}
-                sub={`≈ ${formatCurrency(results.estimatedMissedValue)} in estimated opportunity`}
-              />
-              <ResultCard
-                label="Estimated Time Spent"
-                value={<AnimatedCounter value={results.estimatedTimeSpentHours} suffix=" hrs/mo" />}
-                sub="on manual lead follow-up"
-              />
-              <ResultCard
-                label="Potential Recovered Opportunities"
-                value={<AnimatedCounter value={results.potentialRecoveredOpportunities} suffix="/mo" />}
-                sub={`≈ ${formatCurrency(results.potentialRecoveredValue)} in estimated opportunity`}
-                accent
-              />
-              <ResultCard
-                label="Potential Time Saved"
-                value={<AnimatedCounter value={results.potentialTimeSavedHours} suffix=" hrs/mo" />}
-                sub="freed up for your team"
-                accent
-              />
+            <div className="grid gap-4 sm:grid-cols-2">
+              {mode.resultCards.map((card) => (
+                <ResultCard
+                  key={card.key}
+                  label={card.label}
+                  value={
+                    <AnimatedCounter value={results[card.key] ?? 0} suffix={card.suffix ?? ""} />
+                  }
+                  sub={card.sub(results)}
+                  accent={card.accent}
+                />
+              ))}
             </div>
 
             <div className="flex items-start gap-2.5 rounded-lg border border-ink-700 bg-ink-900/40 p-4 text-xs leading-relaxed text-mist-500">
