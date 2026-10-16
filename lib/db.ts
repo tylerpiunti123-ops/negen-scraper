@@ -32,13 +32,28 @@ export interface PageView {
   created_at: string;
 }
 
+// Vercel's newer Postgres (Neon) integration sometimes prefixes every
+// variable with the project name instead of using plain names — e.g.
+// "nextgenclosersai_POSTGRES_URL" instead of "POSTGRES_URL" — so this
+// checks both the plain name and any variable ending with it.
+const CONNECTION_STRING_SUFFIXES = [
+  "DATABASE_URL",
+  "POSTGRES_URL",
+  "POSTGRES_PRISMA_URL",
+  "DATABASE_URL_UNPOOLED",
+  "POSTGRES_URL_NON_POOLING",
+];
+
 function getConnectionString(): string | null {
-  return (
-    process.env.DATABASE_URL ??
-    process.env.POSTGRES_URL ??
-    process.env.POSTGRES_PRISMA_URL ??
-    null
-  );
+  const envKeys = Object.keys(process.env);
+  for (const suffix of CONNECTION_STRING_SUFFIXES) {
+    const exact = process.env[suffix];
+    if (exact) return exact;
+
+    const prefixed = envKeys.find((key) => key.endsWith(`_${suffix}`));
+    if (prefixed && process.env[prefixed]) return process.env[prefixed]!;
+  }
+  return null;
 }
 
 export function isDbConfigured(): boolean {
