@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { FadeIn } from "@/components/ui/FadeIn";
 import { CalendlyEmbed } from "@/components/contact/CalendlyEmbed";
 import { CALENDLY_URL } from "@/lib/constants";
+import { sendViaWeb3Forms } from "@/lib/web3forms";
 import { cn } from "@/lib/utils";
 
 interface FormState {
@@ -83,6 +84,26 @@ export function BookingSection() {
       ...form,
       industry: form.industry === "Other" ? form.industryOther.trim() : form.industry,
     };
+
+    const web3FormsKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    if (web3FormsKey) {
+      // Fired from the browser, not our server — Web3Forms' spam protection
+      // blocks server-to-server submissions from cloud IPs, but works fine
+      // from a real visitor's browser, which is how it's meant to be used.
+      sendViaWeb3Forms(web3FormsKey, {
+        subject: `New strategy call request — ${payload.business}`,
+        replyTo: payload.email,
+        fields: {
+          Name: payload.name,
+          Business: payload.business,
+          Email: payload.email,
+          Phone: payload.phone,
+          Website: payload.website || "—",
+          Industry: payload.industry,
+          "What they want to automate": payload.automate,
+        },
+      }).catch(() => {});
+    }
 
     try {
       const res = await fetch("/api/contact", {

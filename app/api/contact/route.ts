@@ -3,7 +3,6 @@ import { CONTACT_NOTIFICATION_EMAIL } from "@/lib/constants";
 import { upsertContactFormLead, isDbConfigured } from "@/lib/db";
 import { sendEmail } from "@/lib/email";
 import { escapeHtml } from "@/lib/html";
-import { getWeb3FormsAccessKey, sendViaWeb3Forms } from "@/lib/web3forms";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +29,10 @@ interface ValidatedContact {
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 async function sendNotificationEmail(payload: ValidatedContact) {
+  // The visitor's browser also submits directly to Web3Forms (see
+  // BookingSection.tsx) when NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY is set — their
+  // spam protection rejects server-to-server submissions from cloud IPs, so
+  // it can't be done from here. This is the Gmail/Resend fallback/backup.
   const subject = `New strategy call request — ${payload.business}`;
   const fields = {
     Name: payload.name,
@@ -40,17 +43,6 @@ async function sendNotificationEmail(payload: ValidatedContact) {
     Industry: payload.industry,
     "What they want to automate": payload.automate,
   };
-
-  const web3FormsKey = getWeb3FormsAccessKey();
-  if (web3FormsKey) {
-    const result = await sendViaWeb3Forms(web3FormsKey, {
-      subject,
-      replyTo: payload.email,
-      fields,
-    });
-    if (result.ok) return;
-    console.error("Web3Forms submission failed, falling back to direct email:", result.message);
-  }
 
   const rows = Object.entries(fields);
   const html = `
