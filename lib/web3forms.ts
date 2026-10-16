@@ -1,4 +1,5 @@
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const SITE_URL = "https://nextgenclosersai.vercel.app";
 
 export function getWeb3FormsAccessKey(): string | undefined {
   const key = process.env.WEB3FORMS_ACCESS_KEY?.trim();
@@ -23,7 +24,12 @@ export async function sendViaWeb3Forms(
   try {
     const res = await fetch(WEB3FORMS_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Origin: SITE_URL,
+        Referer: `${SITE_URL}/`,
+      },
       body: JSON.stringify({
         access_key: accessKey,
         subject: submission.subject,
@@ -33,9 +39,18 @@ export async function sendViaWeb3Forms(
       }),
     });
 
-    const data = await res.json().catch(() => ({}));
+    const text = await res.text();
+    const data = (() => {
+      try {
+        return JSON.parse(text);
+      } catch {
+        return null;
+      }
+    })();
+
     if (!res.ok || !data?.success) {
-      return { ok: false, message: data?.message ?? `HTTP ${res.status}` };
+      const message = data?.message ?? (text ? text.slice(0, 200) : `HTTP ${res.status}`);
+      return { ok: false, message };
     }
     return { ok: true };
   } catch (err) {
