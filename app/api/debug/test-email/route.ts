@@ -1,4 +1,5 @@
 import { CONTACT_NOTIFICATION_EMAIL } from "@/lib/constants";
+import { getResendApiKey } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -26,14 +27,14 @@ function page(body: string) {
 }
 
 export async function GET() {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = getResendApiKey();
 
   if (!apiKey) {
     return new Response(
       page(`
         <h1 class="fail">❌ No email key found</h1>
-        <p><code>RESEND_API_KEY</code> isn't set on this deployment, or the deployment hasn't picked it up yet.</p>
-        <p>In Vercel → Settings → Environment Variables, make sure a variable named exactly <code>RESEND_API_KEY</code> exists with your Resend key as the value, covering Production, then redeploy and try this link again.</p>
+        <p>Neither <code>RESEND_API_KEY</code> nor <code>RESEND_API_KE</code> is set on this deployment, or the deployment hasn't picked it up yet.</p>
+        <p>In Vercel → Settings → Environment Variables, make sure one of those has your Resend key as the value, covering Production, then redeploy and try this link again.</p>
       `),
       { headers: { "Content-Type": "text/html" } },
     );

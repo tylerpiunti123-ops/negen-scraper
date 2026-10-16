@@ -6,6 +6,13 @@ export function escapeHtml(value: string) {
     .replace(/"/g, "&quot;");
 }
 
+// Also checks RESEND_API_KE — the variable got saved under that name (missing
+// the Y) in Vercel and editing it there hasn't stuck, so this covers the typo
+// instead of blocking on a dashboard edit.
+export function getResendApiKey(): string | undefined {
+  return process.env.RESEND_API_KEY || process.env.RESEND_API_KE;
+}
+
 interface SendEmailInput {
   to: string;
   subject: string;
@@ -14,7 +21,7 @@ interface SendEmailInput {
 }
 
 export async function sendEmail(input: SendEmailInput): Promise<boolean> {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = getResendApiKey();
   if (!apiKey) {
     console.warn("RESEND_API_KEY not set — skipping email send.");
     return false;
