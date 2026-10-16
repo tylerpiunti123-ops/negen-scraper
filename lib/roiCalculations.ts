@@ -231,17 +231,17 @@ const adsMode: CalculatorMode = {
   heroLabel: "Estimated Ad Spend Going To Waste",
   heroValueKey: "wastedAdSpend",
   heroSub: (r) =>
-    `≈ ${formatCurrency(v(r, "wastedAdSpend") * 12)} per year at your current numbers — based on ${formatNumber(v(r, "leadsWasted"))} ad leads going unanswered/mo.`,
+    `≈ ${formatCurrency(v(r, "wastedAdSpend") * 12)} per year at your current numbers — based on ${formatNumber(v(r, "leadsWasted"))} of your ${formatNumber(v(r, "monthlyAdLeads"))} ad leads/mo going unanswered.`,
   fields: [
     { key: "monthlyAdSpend", label: "Monthly Ad Spend", min: 500, max: 20000, step: 100, prefix: "$" },
-    { key: "monthlyAdLeads", label: "Monthly Leads From Ads", min: 10, max: 300, step: 5 },
+    { key: "costPerLead", label: "Cost Per Lead", min: 10, max: 500, step: 5, prefix: "$" },
     { key: "avgCustomerValue", label: "Average Customer Value", min: 100, max: 20000, step: 100, prefix: "$" },
     { key: "closeRate", label: "Current Close Rate", min: 5, max: 90, step: 1, suffix: "%" },
     { key: "unansweredRate", label: "Leads That Go Unanswered", min: 0, max: 80, step: 5, suffix: "%" },
   ],
   defaults: {
     monthlyAdSpend: 4000,
-    monthlyAdLeads: 80,
+    costPerLead: 50,
     avgCustomerValue: 1800,
     closeRate: 35,
     unansweredRate: 30,
@@ -249,10 +249,10 @@ const adsMode: CalculatorMode = {
   calculate: (inputs) => {
     const closeRateFraction = clampPercent(v(inputs, "closeRate"));
     const avgCustomerValue = v(inputs, "avgCustomerValue");
-    const monthlyAdLeads = v(inputs, "monthlyAdLeads");
     const monthlyAdSpend = v(inputs, "monthlyAdSpend");
+    const costPerLead = v(inputs, "costPerLead");
 
-    const costPerLead = monthlyAdLeads > 0 ? monthlyAdSpend / monthlyAdLeads : 0;
+    const monthlyAdLeads = costPerLead > 0 ? monthlyAdSpend / costPerLead : 0;
     const leadsWasted = monthlyAdLeads * clampPercent(v(inputs, "unansweredRate"));
     const wastedAdSpend = leadsWasted * costPerLead;
     const missedValue = leadsWasted * avgCustomerValue * closeRateFraction;
@@ -260,9 +260,23 @@ const adsMode: CalculatorMode = {
     const recoveredLeads = leadsWasted * AD_LEAD_RECOVERY_RATE;
     const recoveredValue = recoveredLeads * avgCustomerValue * closeRateFraction;
 
-    return { leadsWasted, wastedAdSpend, missedValue, recoveredLeads, recoveredValue };
+    return {
+      monthlyAdLeads,
+      costPerLead,
+      leadsWasted,
+      wastedAdSpend,
+      missedValue,
+      recoveredLeads,
+      recoveredValue,
+    };
   },
   resultCards: [
+    {
+      key: "monthlyAdLeads",
+      label: "Leads Your Ad Spend Generates",
+      suffix: "/mo",
+      sub: (r) => `${formatCurrency(v(r, "costPerLead"))} per lead at your current spend`,
+    },
     {
       key: "leadsWasted",
       label: "Leads Going Unanswered",
