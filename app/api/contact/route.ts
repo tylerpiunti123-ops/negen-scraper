@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { CONTACT_NOTIFICATION_EMAIL } from "@/lib/constants";
 import { upsertContactFormLead, isDbConfigured } from "@/lib/db";
-import { sendEmail, escapeHtml } from "@/lib/email";
+import { sendEmail } from "@/lib/email";
+import { escapeHtml } from "@/lib/html";
 
 export const dynamic = "force-dynamic";
 

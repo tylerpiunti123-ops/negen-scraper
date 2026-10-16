@@ -1,5 +1,5 @@
 import type { Lead } from "@/lib/db";
-import { escapeHtml } from "@/lib/email";
+import { escapeHtml } from "@/lib/html";
 
 const SITE_URL = "https://nextgenclosersai.vercel.app";
 
