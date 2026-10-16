@@ -227,11 +227,11 @@ const adsMode: CalculatorMode = {
   id: "ads",
   tabLabel: "Ads",
   description:
-    "Adjust the numbers to reflect your ad spend and see how much is going to waste on leads that never get a timely response.",
-  heroLabel: "Estimated Ad Spend Going To Waste",
-  heroValueKey: "wastedAdSpend",
+    "Adjust the numbers to reflect your ad spend and see the extra profit on the table from leads that currently go unanswered.",
+  heroLabel: "Estimated Extra Profit You Could Capture",
+  heroValueKey: "recoveredValue",
   heroSub: (r) =>
-    `≈ ${formatCurrency(v(r, "wastedAdSpend") * 12)} per year at your current numbers — based on ${formatNumber(v(r, "leadsWasted"))} of your ${formatNumber(v(r, "monthlyAdLeads"))} ad leads/mo going unanswered.`,
+    `≈ ${formatCurrency(v(r, "recoveredValue") * 12)} per year at your current numbers — by answering ${formatNumber(v(r, "recoveredLeads"))} of the ${formatNumber(v(r, "leadsWasted"))} ad leads/mo you're currently losing, with no extra ad spend.`,
   fields: [
     { key: "monthlyAdSpend", label: "Monthly Ad Spend", min: 500, max: 20000, step: 100, prefix: "$" },
     { key: "costPerLead", label: "Cost Per Lead", min: 10, max: 500, step: 5, prefix: "$" },
@@ -254,7 +254,6 @@ const adsMode: CalculatorMode = {
 
     const monthlyAdLeads = costPerLead > 0 ? monthlyAdSpend / costPerLead : 0;
     const leadsWasted = monthlyAdLeads * clampPercent(v(inputs, "unansweredRate"));
-    const wastedAdSpend = leadsWasted * costPerLead;
     const missedValue = leadsWasted * avgCustomerValue * closeRateFraction;
 
     const recoveredLeads = leadsWasted * AD_LEAD_RECOVERY_RATE;
@@ -264,7 +263,6 @@ const adsMode: CalculatorMode = {
       monthlyAdLeads,
       costPerLead,
       leadsWasted,
-      wastedAdSpend,
       missedValue,
       recoveredLeads,
       recoveredValue,
@@ -281,13 +279,13 @@ const adsMode: CalculatorMode = {
       key: "leadsWasted",
       label: "Leads Going Unanswered",
       suffix: "/mo",
-      sub: (r) => `≈ ${formatCurrency(v(r, "missedValue"))} in estimated opportunity`,
+      sub: (r) => `≈ ${formatCurrency(v(r, "missedValue"))} in lost opportunity`,
     },
     {
       key: "recoveredLeads",
       label: "Potential Recovered Leads",
       suffix: "/mo",
-      sub: (r) => `≈ ${formatCurrency(v(r, "recoveredValue"))} in estimated opportunity`,
+      sub: (r) => `≈ ${formatCurrency(v(r, "recoveredValue"))} in extra profit`,
       accent: true,
     },
   ],
